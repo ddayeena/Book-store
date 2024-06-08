@@ -1,0 +1,59 @@
+.catalog {
+    max-width: 1300px;
+    margin: 0 auto;
+    margin-bottom: 200px;
+  }
+  
+  .book-row {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 50px;
+    padding-top: 70px;
+    border-bottom: 1px solid #666;
+  }
+  
+  .book {
+    width: 250;
+    text-align: center;
+  }
+  
+  .book-cover {
+    width: 250px;
+    height:350px;
+    margin-bottom: -10px;
+    border-radius:10px;
+    transition: transform 0.2s ease;
+  }
+  .book-cover:hover{
+    transform: scale(1.1);
+  }
+  .name {
+    margin: -20px;
+    color: rgb(59, 81, 126);
+    font-size: 24px;
+    text-decoration: none;
+  }
+  .price{
+    color: rgb(173, 28, 28);
+    font-weight:600;
+    font-size: 28px;
+    background: rgb(235, 228, 228);
+    border-radius:5px;
+  }
+  
+  .start{
+    color: #666;
+    font-size: 22px;
+  }
+  h1{
+    color: #333;
+  }
+  a {
+    text-decoration: none;
+  }
+
+  a h3:hover{
+    color:#ec70a8;
+  }
+  
+
