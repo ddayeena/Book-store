@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     fetchBooks() {
-      axios.get('http://localhost/BookStore/backend/getBooks.php')
+      axios.get('http://localhost/Book-Store/backend/getBooks.php')
         .then(response => {
           this.books = response.data;
         })

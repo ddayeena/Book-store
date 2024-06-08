@@ -42,7 +42,7 @@ export default {
   },
   methods: {
     fetchBooks() {
-      axios.get('http://localhost/BookStore/backend/getBooksByGenre.php?genre_id=4')
+      axios.get('http://localhost/Book-Store/backend/getBooksByGenre.php?genre_id=4')
         .then(response => {
           this.books = response.data;
         })
