@@ -11,14 +11,14 @@
     <div v-else>
       <div class="book-row" v-for="(row, index) in Math.ceil(books.length / 4)" :key="index" >
         <div class="book" v-for="book in getBooksInRow(index)" :key="book.id">
-          <router-link to="/book">
+          <router-link :to="{ name: 'Book', params: { id: book.id }}">
             <img :src="book.img_src" alt="Book Cover" class="book-cover">
           </router-link>
           <div class="book-info">
-            <p  class = "price">{{ book.price }} грн</p>
-            <router-link to="/book">
-              <h3 class="name">{{ book.name }}</h3>
-            </router-link>
+            <p  class = "price"><b>{{ book.price }}</b> грн</p>
+              <router-link :to="{ name: 'Book', params: { id: book.id }}">
+                <h3 class = "name">{{ book.name }}</h3>
+              </router-link>
             <h4 class = "author">{{ book.author }}</h4>
           </div>
         </div>

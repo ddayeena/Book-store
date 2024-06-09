@@ -1,6 +1,5 @@
 import { createWebHashHistory, createRouter } from 'vue-router'
 
-//import App from './App.vue'
 import About from './components/About.vue'
 import Home from './components/Home.vue'
 import Catalog from './components/Catalog.vue'
@@ -28,6 +27,6 @@ export default createRouter({
         { path: '/catalog/thrillers-and-horror', component: ThrillersAndHorror},
         { path: '/catalog/fantasy', component: Fantasy},
         { path: '/catalog/comics', component: Comics},
-        { path: '/book', component: Book},
+        { path: '/book', name: 'Book',component: Book, props: true},
     ]
 })
