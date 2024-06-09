@@ -1,18 +1,20 @@
 <template>
   <div class="container">
-    
     <div class="book-details">
       <img :src="book.img_src" alt="Book Cover" class="book-cover">
       <div class="book-info">
         <h1 class="name">{{ book.name }}</h1>
         <h3 class="author">{{ book.author }}</h3>
-        <p class="price"><b>{{ book.price }}</b> грн</p>
+        <div class="price-buy">
+          <p class="price"><b>{{ book.price }}</b> грн</p>
+          <button class="buy-button" @click="buyBook">Купити</button>
+        </div>
       </div>
     </div>
 
     <div class="description">
-        <h2>Опис книги</h2>
-        <p >{{ book.description }}</p>
+      <h2>Опис книги</h2>
+      <p>{{ book.description }}</p>
     </div>
   </div>
 </template>
@@ -39,6 +41,9 @@ export default {
         .catch(error => {
           console.error("There was an error!", error);
         });
+    },
+    buyBook() {
+      alert('Книга додана до кошика!');
     }
   }
 };
@@ -63,7 +68,7 @@ export default {
 
 .book-cover {
   width: 350px;
-  height:480px;
+  height: 480px;
   margin-right: 20px;
   border-radius: 10px;
 }
@@ -74,22 +79,29 @@ export default {
   align-items: flex-start;
 }
 
-.author{
+.author {
   color: rgb(59, 81, 126); 
-  font-weight:lighter;
-  font-size:22px;
+  font-weight: lighter;
+  font-size: 22px;
   margin-top: 10px;
 }
-.name{
-  font-size:36px;
+
+.name {
+  font-size: 36px;
   margin-bottom: 0;
-  font-weight:lighter;
+  font-weight: lighter;
+}
+
+.price-buy {
+  display: flex;
+  align-items: center;
+  margin-top: 20px;
 }
 
 .price {
   color: rgb(135, 24, 24);
   font-size: 30px;
-  margin-top: 200px;
+  margin-right: 20px;
 }
 
 .description {
@@ -100,11 +112,26 @@ export default {
   text-align: justify;
 }
 
-h2{
-    color:rgb(122, 30, 30);
-    border-bottom: 1px solid rgb(118, 27, 27);
-    font-size:30px;
-    width:1200;
-    font-weight:lighter;
+h2 {
+  color: rgb(122, 30, 30);
+  border-bottom: 1px solid rgb(122, 30, 30);
+  font-size: 30px;
+  width: 1200px;
+  font-weight: lighter;
+}
+
+.buy-button {
+  padding: 10px 20px;
+  background-color: rgb(122, 30, 30);
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s;
+}
+
+.buy-button:hover {
+  background-color: rgb(74, 17, 17);
 }
 </style>

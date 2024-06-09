@@ -30,8 +30,7 @@ export default {
                 email: this.userEmail
             };
 
-            // Встановіть URL-адресу сервера для перевірки користувача в базі даних
-            const url = 'http://localhost/Book-Store/backend/checkUser.php'; // Припустимо, що це ваш URL-адрес сервера
+            const url = 'http://localhost/Book-Store/backend/checkUser.php'; 
 
             axios.post(url, userData, {
                 headers: {
@@ -39,7 +38,6 @@ export default {
                 }
             })
                 .then(response => {
-                    // Якщо користувач існує, перенаправте його на сторінку з вітанням
                     if (response.data.message === "Користувач знайдений") {
                         this.$router.push('/myprofile');
                     } else {
@@ -47,7 +45,6 @@ export default {
                     }
                 })
                 .catch(error => {
-                    // Обробка помилок, якщо користувач не знайдений
                     this.error = 'Помилка при з\'єднанні з сервером.';
                     console.error('Помилка:', error);
                 });
@@ -94,8 +91,7 @@ button {
 }
 
 button:hover {
-  background-color: rgb(207, 190, 190);
-  color:#ec70a8;
+  background-color: #cb4d86;
 }
 
 </style>
