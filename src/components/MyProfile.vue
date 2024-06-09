@@ -1,16 +1,17 @@
 <template>
-    <div>
-        <h2>Кабінет</h2>
-        <p>Тут знаходиться інформація про користувача.</p>
-    </div>
+    <h1>КАБІНЕТ</h1>
+    <h3>Вітаємо вас!</h3>
 </template>
 
 <script>
-export default{
-    
-}
+import axios from 'axios';
+
+export default {
+
+};
 </script>
 
-<style>
+<style scoped>
+
 
 </style>

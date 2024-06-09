@@ -12,6 +12,7 @@ import ThrillersAndHorror from './components/catalog/ThrillersAndHorror.vue'
 import Fantasy from './components/catalog/Fantasy.vue'
 import Comics from './components/catalog/Comics.vue'
 import Book from './components/Book.vue'
+import Register from './components/Register.vue'
 
 export default createRouter({
     history: createWebHashHistory(),
@@ -28,5 +29,6 @@ export default createRouter({
         { path: '/catalog/fantasy', component: Fantasy},
         { path: '/catalog/comics', component: Comics},
         { path: '/book', name: 'Book',component: Book, props: true},
+        { path: '/register', component: Register},
     ]
 })
