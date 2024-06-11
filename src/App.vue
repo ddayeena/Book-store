@@ -20,7 +20,7 @@
         <router-link to="/novelty">Новинки</router-link>
         <router-link to="/cart">Кошик</router-link>
         <router-link to="/about">Про нас</router-link>
-        <router-link to="/register">Кабінет</router-link>
+        <router-link to="/login">Кабінет</router-link>
       </nav>
     </header>
     <main>

@@ -1,0 +1,61 @@
+<?php
+header('Access-Control-Allow-Origin: *');
+header('Content-Type: application/json');
+header('Access-Control-Allow-Methods: POST');
+header('Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With');
+
+$servername = "127.0.0.1";
+$username = "root";
+$password = "";
+$dbname = "bookstore";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die(json_encode(["message" => "Connection failed: " . $conn->connect_error]));
+}
+
+$data = json_decode(file_get_contents("php://input"), true);
+
+if (isset($data['name']) && isset($data['password']) && isset($data['email'])) {
+    $name = $conn->real_escape_string($data['name']);
+    $password = $conn->real_escape_string($data['password']);
+    $email = $conn->real_escape_string($data['email']);
+    
+    if(strlen($name)==0){
+        echo json_encode(["message" => "Поле Ім'я немає бути порожнім"]);
+        $conn->close();
+        exit();
+    }
+
+    if (strlen($password) < 6) {
+        echo json_encode(["message" => "Пароль має бути більше 5 символів"]);
+        $conn->close();
+        exit();
+    }
+
+    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+        echo json_encode(["message" => "Некоректний формат email"]);
+        $conn->close();
+        exit();
+    }
+
+    $checkUser = "SELECT * FROM user WHERE name='$name' OR email='$email'";
+    $result = $conn->query($checkUser);
+
+    if ($result->num_rows > 0) {
+        echo json_encode(["message" => "Логін або email вже існує"]);
+    } else {
+        $sql = "INSERT INTO user (name, password, email) VALUES ('$name', '$password', '$email')";
+        if ($conn->query($sql) === TRUE) {
+            echo json_encode(["message" => "Користувач зареєстрований успішно"]);
+        } else {
+            echo json_encode(["message" => "Помилка при реєстрації: " . $conn->error]);
+        }
+    }
+} else {
+    echo json_encode(["message" => "Неправильні вхідні дані"]);
+}
+
+$conn->close();
+?>

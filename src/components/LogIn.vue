@@ -1,16 +1,16 @@
 <template>
-    <div class="register">
+    <div class="login">
         <h1>КАБІНЕТ</h1>
-        <p class="start">Введіть дані для реєстрації</p>
+        <p class="start">Введіть дані для авторизації</p>
         <input type="text" v-model="userName" placeholder="Логін">
         <input type="password" v-model="userPass" placeholder="Пароль">
         <input type="email" v-model="userEmail" placeholder="Email">
-        <div class="acc">
-            <p class="quest">Вже є особиста сторінка?</p>
-            <router-link to="/login"><button class="log_but">Натисніть тут</button></router-link>
+        <div class="new_acc">
+            <p class="quest">Ще не створили власну сторінку?</p>
+            <router-link to="/register"><button class="reg_but">Натисніть тут</button></router-link>
         </div>
         <p class="error">{{ error }}</p>
-        <button class="reg_but" @click="sendData">Зареєструватися</button>
+        <button class="log_but" @click="sendData">Увійти</button>
     </div>
 </template>
 
@@ -34,7 +34,7 @@ export default {
                 email: this.userEmail
             };
 
-            const url = 'http://localhost/Book-Store/backend/regUser.php'; 
+            const url = 'http://localhost/Book-Store/backend/checkUser.php'; 
 
             axios.post(url, userData, {
                 headers: {
@@ -42,7 +42,7 @@ export default {
                 }
             })
                 .then(response => {
-                    if (response.data.message === "Користувач зареєстрований успішно") {
+                    if (response.data.message === "Користувач знайдений") {
                         this.$router.push('/myprofile');
                     } else {
                         this.error = response.data.message;
@@ -56,7 +56,6 @@ export default {
 
     }
 };
-
 </script>
 
 <style scoped>
@@ -71,7 +70,7 @@ input[type="email"] {
   border-radius: 5px;
   font-size:22px;
 }
-.register{
+.login{
     width:800px;
     margin:0 auto;
 }
@@ -85,7 +84,7 @@ input[type="email"] {
   font-size:22px;
 }
 
-.reg_but {
+.log_but {
   padding: 10px 20px;
   background-color:#ec70a8;
   color: #fff;
@@ -96,11 +95,11 @@ input[type="email"] {
   font-size:22px;
 }
 
-.reg_but:hover {
+.log_but:hover {
   background-color: #cb4d86;
 }
 
-.acc{
+.new_acc{
     display:flex;
     justify-content: space-between;
 }
@@ -110,7 +109,7 @@ input[type="email"] {
     font-size: 20px;
 }
 
-.log_but{
+.reg_but{
     border-style:none;
     background: none;
     color:rgb(59, 81, 126);
@@ -123,7 +122,7 @@ input[type="email"] {
     margin-top:10px;
 }
 
-.log_but:hover{
+.reg_but:hover{
     color:#fff;
     background:rgb(64, 91, 147);
 }
