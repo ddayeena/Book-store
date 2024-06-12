@@ -17,7 +17,7 @@
               <router-link :to="{ name: 'Book', params: { id: book.id }}">
                 <h3 class = "name">{{ book.name }}</h3>
               </router-link>
-            <h4 class = "author">{{ book.author }}</h4>
+            <p class = "author">{{ book.author }}</p>
           </div>
         </div>
       </div>
@@ -69,3 +69,4 @@ export default {
     border-radius:15px;
 }
 </style>
+
