@@ -22,8 +22,8 @@ if (isset($data['name']) && isset($data['password']) && isset($data['email'])) {
     $password = $conn->real_escape_string($data['password']);
     $email = $conn->real_escape_string($data['email']);
     
-    if(strlen($name)==0){
-        echo json_encode(["message" => "Поле Ім'я немає бути порожнім"]);
+    if(strlen($name)<3){
+        echo json_encode(["message" => "Ім'я має бути більше 2 символів"]);
         $conn->close();
         exit();
     }

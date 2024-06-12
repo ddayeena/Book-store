@@ -82,10 +82,14 @@ nav a {
   font-weight: bold;
   font-size: 20px;
   position: relative;
+  border-radius: 20px;
+  padding-right: 30px;
+  padding-left: 30px;
 }
 
 nav a:hover {
-  color: #ec70a8;
+  color: #fff;
+  background-color: #ec70a8;
 }
 
 .dropdown {
@@ -98,10 +102,11 @@ nav a:hover {
   background-color: #f9f9f9;
   min-width: 160px;
   box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
 }
 
 .dropdown-content a {
-  color: black;
+  color: #333;
   padding: 12px 16px;
   text-decoration: none;
   display: block;
@@ -109,7 +114,8 @@ nav a:hover {
 }
 
 .dropdown-content a:hover {
-  background-color: #f1f1f1;
+  color: #fff;
+  background-color: #ec70a8;
 }
 
 .dropdown:hover .dropdown-content {
