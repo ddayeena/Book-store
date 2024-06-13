@@ -12,4 +12,13 @@ export function isAuthenticated() {
 
 export function logout() {
   localStorage.removeItem('token');
+  localStorage.removeItem('user');
+}
+
+export function setUser(user) {
+  localStorage.setItem('user', JSON.stringify(user));
+}
+
+export function getUser() {
+  return JSON.parse(localStorage.getItem('user'));
 }

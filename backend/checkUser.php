@@ -26,8 +26,9 @@ if (isset($data['name']) && isset($data['password']) && isset($data['email'])) {
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
+        $user = $result->fetch_assoc();
         $token = bin2hex(random_bytes(16));
-        echo json_encode(["message" => "Користувач знайдений", "token" => $token]);
+        echo json_encode(["message" => "Користувач знайдений", "token" => $token, "user" => $user]);
     } else {
         echo json_encode(["message" => "Користувача не знайдено"]);
     }

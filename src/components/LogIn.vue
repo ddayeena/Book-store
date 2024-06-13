@@ -16,7 +16,7 @@
 
 <script>
 import axios from 'axios';
-import { setToken } from '@/auth';
+import { setToken, setUser } from '@/auth';
 
 export default {
     data() {
@@ -44,7 +44,8 @@ export default {
             })
                 .then(response => {
                     if (response.data.message === "Користувач знайдений") {
-                        setToken(response.data.token); 
+                        setToken(response.data.token);
+                        setUser(response.data.user); 
                         this.$router.push('/myprofile');
                     } else {
                         this.error = response.data.message;
@@ -58,6 +59,7 @@ export default {
     }
 };
 </script>
+
 
 <style scoped>
 input[type="text"],

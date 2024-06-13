@@ -1,10 +1,12 @@
 <template>
   <div id="app">
     <header>
-      <div class="logo">
-        <img src="\src\assets\logo.png" alt="Книжковий Магазин Логотип">
-        <h1>Літералія</h1>
-      </div>
+        <div class="logo">
+          <router-link to='/'>
+            <img src="\src\assets\logo.png" alt="Книжковий Магазин Логотип">
+          </router-link>
+          <h1 class="logo_name">ЛІТЕРАЛІЯ</h1>
+        </div>
       <nav>
         <router-link to="/">Головна</router-link>
         <div class="dropdown">
@@ -77,12 +79,17 @@ header {
 
 .logo img {
   height: 70px;
-  margin-left: 20px;
+  margin-left: 30px;
   float: left;
 }
 
 .logo {
-  width: 280px;
+  width: 320px;
+}
+
+.logo_name{
+  color:#333;
+  font-weight: bolder;
 }
 
 nav {

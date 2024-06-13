@@ -16,7 +16,7 @@
 
 <script>
 import axios from 'axios';
-import { setToken } from '@/auth';
+import { setToken, setUser } from '@/auth';
 
 export default {
     data() {
@@ -45,6 +45,7 @@ export default {
                 .then(response => {
                     if (response.data.message === "Користувач зареєстрований успішно") {
                         setToken(response.data.token); 
+                        setUser(response.data.user); 
                         this.$router.push('/myprofile');
                     } else {
                         this.error = response.data.message;

@@ -48,7 +48,21 @@ if (isset($data['name']) && isset($data['password']) && isset($data['email'])) {
     } else {
         $sql = "INSERT INTO user (name, password, email) VALUES ('$name', '$password', '$email')";
         if ($conn->query($sql) === TRUE) {
-            echo json_encode(["message" => "Користувач зареєстрований успішно"]);
+            $sql1="SELECT created_at FROM user WHERE name='$name'";
+            $result1 = $conn->query($sql1);
+            $created_at=null;
+            if($result1->num_rows>0){
+                $row=$result1->fetch_assoc();
+                $created_at=$row['created_at'];
+            }
+            $user = [
+                'name' => $name,
+                'password' => $password,
+                'email' => $email,
+                'created_at'=>$created_at
+            ];
+            $token = bin2hex(random_bytes(16));
+            echo json_encode(["message" => "Користувач зареєстрований успішно","token" => $token, "user" => $user]);
         } else {
             echo json_encode(["message" => "Помилка при реєстрації: " . $conn->error]);
         }
