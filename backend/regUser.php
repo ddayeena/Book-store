@@ -23,7 +23,7 @@ if (isset($data['name']) && isset($data['password']) && isset($data['email'])) {
     $email = $conn->real_escape_string($data['email']);
     
     if(strlen($name)<3){
-        echo json_encode(["message" => "Ім'я має бути більше 2 символів"]);
+        echo json_encode(["message" => "Логін має бути більше 2 символів"]);
         $conn->close();
         exit();
     }

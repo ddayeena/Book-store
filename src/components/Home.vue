@@ -80,7 +80,6 @@ export default {
 
 <style scoped>
 .start_img{
-  border-radius:10px;
   width:1200px;
 }
 .carousel-container {
@@ -116,22 +115,21 @@ export default {
   height: 50px;
   font-size: 24px;
   cursor: pointer;
-  position: absolute;
-  top: 50%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: #666;
   color: white;
+  border:none;
+  border-radius:5px;
 }
 
 .left {
-  left:0;
   margin-left: 500px;
-  margin-top: 1000px;
 }
 
 .right {
-  right:0;
   margin-right: 500px;
-  margin-top: 1000px;
+}
+.left:hover,.right:hover{
+  background-color: #999;
 }
 
 .start{

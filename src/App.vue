@@ -20,7 +20,8 @@
         <router-link to="/novelty">Новинки</router-link>
         <router-link to="/cart">Кошик</router-link>
         <router-link to="/about">Про нас</router-link>
-        <router-link to="/login">Кабінет</router-link>
+        <router-link to="/myprofile">Мій кабінет</router-link>
+        <button v-if="isAuthenticated" @click="logout" class="logout">Вийти</button>
       </nav>
     </header>
     <main>
@@ -32,13 +33,28 @@
   </div>
 </template>
 
-
 <script>
-import axios from 'axios';
+import { isAuthenticated, logout } from '@/auth';
 
 export default {
-  name: 'App',  
-}
+  name: 'App',
+  data() {
+    return {
+      isAuthenticated: false
+    };
+  },
+  watch: {
+    $route(to, from) {
+      this.isAuthenticated = isAuthenticated(); 
+    }
+  },
+  methods: {
+    logout() {
+      logout();
+      this.$router.push('/');
+    }
+  }
+};
 </script>
 
 <style>
@@ -121,6 +137,19 @@ nav a:hover {
 .dropdown:hover .dropdown-content {
   display: block;
 }
+.logout{
+  color: #333;
+  font-size:20px;
+  border:none;
+  background:none;
+  font-weight:bold;
+  cursor:pointer;
+  border-left:1px solid #333;
+}
+.logout:hover{
+  color:#ec70a8;
+  text-decoration:underline;
+}
 
 main {
   padding: 20px;
@@ -136,5 +165,4 @@ footer {
   width: 100%;
   bottom: 0;
 }
-
 </style>

@@ -16,6 +16,7 @@
 
 <script>
 import axios from 'axios';
+import { setToken } from '@/auth';
 
 export default {
     data() {
@@ -34,7 +35,7 @@ export default {
                 email: this.userEmail
             };
 
-            const url = 'http://localhost/Book-Store/backend/checkUser.php'; 
+            const url = 'http://localhost/Book-Store/backend/checkUser.php';
 
             axios.post(url, userData, {
                 headers: {
@@ -43,6 +44,7 @@ export default {
             })
                 .then(response => {
                     if (response.data.message === "Користувач знайдений") {
+                        setToken(response.data.token); 
                         this.$router.push('/myprofile');
                     } else {
                         this.error = response.data.message;
@@ -53,7 +55,6 @@ export default {
                     console.error('Помилка:', error);
                 });
         },
-
     }
 };
 </script>
