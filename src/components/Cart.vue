@@ -1,13 +1,24 @@
 <template>
   <div class="cart">
     <h1>КОШИК</h1>
-    <p>Тут знаходяться товари, які ви бажаєте придбати</p>
-    <p v-if="isAuthenticated && user">
-      {{ cartMessage }}
-    </p>
-    <p v-else>
-      Ви не увійшли в систему. Будь ласка, увійдіть для перегляду свого кошика.
-    </p>
+    
+    <div v-if="isAuthenticated && user">
+        <p class="start">{{ cartMessage }}</p>
+        <ul v-if="cart_items.length > 0">
+        <li v-for="cart_item in cart_items" :key="cart_item.cart_items">
+            <p>Товар №{{ cart_item.cart_id }}</p>
+            <p>Книга: {{ cart_item.book_name }}</p>
+            <p>Кількість: {{ cart_item.quantity }}</p>
+            <p>Ціна за одиницю: {{ cart_item.unit_price }} грн</p>
+        </li>
+        </ul>
+    </div>
+
+    <div v-else>
+      <p class="start">Ви не авторизовані. Будь ласка, увійдіть у свій кабінет для перегляду товарів</p>
+      <router-link to="/login" class="login">Увійти</router-link>
+    </div>
+
   </div>
 </template>
 
@@ -18,7 +29,8 @@ import { isAuthenticated, getUser } from '@/auth';
 export default {
   data() {
     return {
-      cartMessage: '' 
+      cartMessage: '', 
+      cart_items: [] 
     };
   },
   computed: {
@@ -31,23 +43,22 @@ export default {
   },
   mounted() {
     if (this.isAuthenticated && this.user) {
-      this.checkOrderCount(this.user.id);
+      this.checkCart(this.user.id);
     }
   },
   methods: {
-    checkOrderCount(userId) {
-      axios.get(`http://localhost/Book-Store/backend/getOrders.php?user_id=${userId}`)
+    checkCart(userId) {
+      axios.get(`http://localhost/Book-Store/backend/getCart.php?user_id=${userId}`)
         .then(response => {
-          if (response.data && response.data.order_count !== undefined) {
-            const orderCount = response.data.order_count;
-            if (orderCount === 0) {
+          if (response.data && response.data.cart_items) {
+            this.cart_items = response.data.cart_items;
+            if (this.cart_items.length === 0) {
               this.cartMessage = 'У вас немає доданих книг';
-            } 
-            else {
-              this.cartMessage = `У вас є ${orderCount} книг`;
+            } else {
+              this.cartMessage = `Кількість доданих книг до кошика: ${this.cart_items.length}`;
             }
           } else {
-            this.cartMessage = 'Дані про замовлення недоступні';
+            this.cartMessage = 'Дані про кошик недоступні';
           }
         })
         .catch(error => {
@@ -59,6 +70,25 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
+.start {
+  color: #666;
+  font-size: 22px;
+}
 
+.login {
+  padding: 10px 20px;
+  background-color: #ec70a8;
+  color: #fff;
+  border-radius: 5px;
+  border-style: none;
+  cursor: pointer;
+  transition: background-color 0.5s;
+  font-size: 22px;
+  text-decoration: none;
+}
+
+.login:hover {
+  background-color: #cb4d86;
+}
 </style>

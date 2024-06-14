@@ -16,13 +16,13 @@ if ($conn->connect_error) {
 
 $user_id = $_GET['user_id'];
 
-$sql = "SELECT orders.id AS order_id, orders.order_date, orders.total_price, orders.status,
-               order_details.book_id, order_details.quantity, order_details.unit_price,
+$sql = "SELECT cart.id AS cart_id, cart.user_id,
+               cart_details.book_id, cart_details.quantity, cart_details.unit_price,
                book.name AS book_name
-        FROM orders
-        JOIN order_details ON orders.id = order_details.order_id
-        JOIN book ON order_details.book_id = book.id
-        WHERE orders.user_id = ?";
+        FROM cart
+        JOIN cart_details ON cart.id = cart_details.cart_id
+        JOIN book ON cart_details.book_id = book.id
+        WHERE cart.user_id = ?";
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
@@ -30,16 +30,16 @@ $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$orders = [];
+$cart_items = [];
 
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
-        $orders[] = $row;
+        $cart_items[] = $row;
     }
 }
 
 $stmt->close();
 $conn->close();
 
-echo json_encode(['orders' => $orders]);
+echo json_encode(['cart_items' => $cart_items]);
 ?>
