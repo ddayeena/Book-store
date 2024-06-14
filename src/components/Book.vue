@@ -7,7 +7,7 @@
         <h3 class="author">{{ book.author }}</h3>
         <div class="price-buy">
           <p class="price"><b>{{ book.price }}</b> грн</p>
-          <button class="buy-button" @click="buyBook">Купити</button>
+          <button class="buy-button" @click="buyBook">До кошика</button>
         </div>
       </div>
     </div>
