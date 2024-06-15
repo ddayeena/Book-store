@@ -3,15 +3,16 @@
     <h1>КОШИК</h1>
     
     <div v-if="isAuthenticated && user">
-        <p class="start">{{ cartMessage }}</p>
-        <ul v-if="cart_items.length > 0">
+      <p class="start">{{ cartMessage }}</p>
+      <ul v-if="cart_items.length > 0">
         <li v-for="(cart_item, index) in cart_items" :key="cart_item.cart_id">
-            <p>Товар №{{ index + 1 }}</p>   
-            <p>Книга: {{ cart_item.book_name }}</p>
-            <p>Кількість: {{ cart_item.quantity }}</p>
-            <p>Ціна за одиницю: {{ cart_item.unit_price }} грн</p>
+          <p>Товар №{{ index + 1 }}</p>   
+          <p>Книга: {{ cart_item.book_name }}</p>
+          <p>Кількість: {{ cart_item.quantity }}</p>
+          <p>Ціна за одиницю: {{ cart_item.unit_price }} грн</p>
         </li>
-        </ul>
+      </ul>
+      <p v-if="cart_items.length > 0" class="total-price">Загальна вартість: {{ getTotalPrice() }} грн</p>
     </div>
 
     <div v-else>
@@ -65,7 +66,14 @@ export default {
           console.error('Помилка запиту:', error);
           this.cartMessage = 'Помилка отримання даних';
         });
-    } 
+    },
+    getTotalPrice() {
+      let totalPrice = 0;
+      this.cart_items.forEach(item => {
+        totalPrice += item.quantity * item.unit_price;
+      });
+      return totalPrice.toFixed(2); // Округлення до двох знаків після коми
+    }
   }
 };
 </script>
@@ -90,5 +98,10 @@ export default {
 
 .login:hover {
   background-color: #cb4d86;
+}
+
+.total-price {
+  font-size: 18px;
+  margin-top: 10px;
 }
 </style>

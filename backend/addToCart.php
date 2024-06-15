@@ -14,6 +14,7 @@ $conn = new mysqli($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die(json_encode(['error' => 'Connection failed: ' . $conn->connect_error]));
 }
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $data = json_decode(file_get_contents("php://input"), true);
     $user_id = $data['user_id'];
@@ -21,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $quantity = $data['quantity'];
     $unit_price = $data['unit_price'];
 
-    $sql = "SELECT id FROM cart WHERE user_id = ?";
+    $sql = "SELECT id, total_price FROM cart WHERE user_id = ?";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("i", $user_id);
     $stmt->execute();
@@ -30,14 +31,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (!$cart) {
         //якщо кошика немає тоді створити новий
-        $sql = "INSERT INTO cart (user_id) VALUES (?)";
+        $sql = "INSERT INTO cart (user_id, total_price) VALUES (?, ?)";
+        $initial_total_price = $unit_price;
         $stmt = $conn->prepare($sql);
-        $stmt->bind_param("i", $user_id);
+        $stmt->bind_param("id", $user_id, $initial_total_price);
         $stmt->execute();
         $cart_id = $stmt->insert_id;
     } else {
-        //якщо кошик існує то взяти його ID
+        //якщо кошик існує то взяти його ID і поточний total_price
         $cart_id = $cart['id'];
+        $current_total_price = $cart['total_price'];
     }
 
     $sql = "SELECT quantity FROM cart_details WHERE cart_id = ? AND book_id = ?";
@@ -69,7 +72,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             echo json_encode(['error' => 'Помилка при додаванні книги до кошика']);
         }
     }
+
+    //оновити total_price в таблиці cart
+    if (isset($current_total_price)) {
+        $new_total_price = $current_total_price +  $unit_price;
+        $sql = "UPDATE cart SET total_price = ? WHERE id = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("di", $new_total_price, $cart_id);
+        $stmt->execute();
+    }
 }
+
 $stmt->close();
 $conn->close();
 ?>
