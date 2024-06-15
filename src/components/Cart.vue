@@ -5,8 +5,8 @@
     <div v-if="isAuthenticated && user">
         <p class="start">{{ cartMessage }}</p>
         <ul v-if="cart_items.length > 0">
-        <li v-for="cart_item in cart_items" :key="cart_item.cart_items">
-            <p>Товар №{{ cart_item.cart_id }}</p>
+        <li v-for="(cart_item, index) in cart_items" :key="cart_item.cart_id">
+            <p>Товар №{{ index + 1 }}</p>   
             <p>Книга: {{ cart_item.book_name }}</p>
             <p>Кількість: {{ cart_item.quantity }}</p>
             <p>Ціна за одиницю: {{ cart_item.unit_price }} грн</p>
@@ -55,7 +55,7 @@ export default {
             if (this.cart_items.length === 0) {
               this.cartMessage = 'У вас немає доданих книг';
             } else {
-              this.cartMessage = `Кількість доданих книг до кошика: ${this.cart_items.length}`;
+              this.cartMessage = `Додані книги до кошика: ${this.cart_items.length}`;
             }
           } else {
             this.cartMessage = 'Дані про кошик недоступні';

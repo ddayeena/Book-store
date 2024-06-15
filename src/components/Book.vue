@@ -21,6 +21,7 @@
 
 <script>
 import axios from 'axios';
+import { isAuthenticated, getUser } from '@/auth';
 
 export default {
   props: ['id'],
@@ -28,6 +29,14 @@ export default {
     return {
       book: {}
     };
+  },
+  computed: {
+    isAuthenticated() {
+      return isAuthenticated();
+    },
+    user() {
+      return getUser(); 
+    }
   },
   created() {
     this.fetchBook();
@@ -43,7 +52,23 @@ export default {
         });
     },
     buyBook() {
-      alert('Книга додана до кошика!');
+      if (!this.isAuthenticated) {
+        alert("Будь ласка, увійдіть у свій акаунт, щоб додати книгу до кошика.");
+        return;
+      }
+
+      axios.post('http://localhost/Book-Store/backend/addToCart.php', {
+        user_id: this.user.id,
+        book_id: this.book.id,
+        quantity: 1,
+        unit_price: this.book.price
+      })
+      .then(response => {
+        alert(response.data.message);
+      })
+      .catch(error => {
+        console.error("There was an error!", error);
+      });
     }
   }
 };
