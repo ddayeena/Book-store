@@ -6,32 +6,32 @@
       <p class="start">{{ cartMessage }}</p>
 
       <div v-if="cart_items.length > 0">
-          <div v-for="(cart_item, index) in cart_items" :key="cart_item.cart_id" class="book-info">
-            
+        <div v-for="(cart_item, index) in cart_items" :key="cart_item.cart_id" class="book-info">
+          <div class="book-details">
             <p class="number">{{ index + 1 }}</p>   
             <router-link :to="{ name: 'Book', params: { id: cart_item.book_id }}">
               <img :src="cart_item.img_src" alt="Book Cover" class="book-cover">
             </router-link>
-
             <div class="details">
               <router-link :to="{ name: 'Book', params: { id: cart_item.book_id }}">
                 <p class="name">{{ cart_item.name }}</p>
               </router-link>
+              <p>{{cart_item.cart_id}}</p>
               <p class="author">{{cart_item.author}}</p>
               <p class="quantity">Кількість: {{ cart_item.quantity }}</p>
               <p class="price">Ціна: <b>{{ cart_item.unit_price }}</b> грн</p>
             </div>
-            
           </div>
+          <button class="remove-btn" @click="removeFromCart(cart_item.cart_details_id)">✖</button>
+        </div>
       </div>
-      <p v-if="cart_items.length > 0" class="total-price"><b>РАЗОМ:</b> {{total_price }} грн</p>
+      <p v-if="cart_items.length > 0" class="total-price"><b>РАЗОМ:</b> {{ total_price }} грн</p>
     </div>
 
     <div v-else>
       <p class="start">Ви не авторизовані. Будь ласка, увійдіть у свій кабінет для перегляду товарів</p>
       <router-link to="/login" class="login">Увійти</router-link>
     </div>
-
   </div>
 </template>
 
@@ -44,7 +44,7 @@ export default {
     return {
       cartMessage: '', 
       cart_items: [],
-      total_price:0 
+      total_price: 0 
     };
   },
   computed: {
@@ -78,9 +78,19 @@ export default {
         })
         .catch(error => {
           console.error('Помилка запиту:', error);
-          this.cartMessage = 'Помилка отримання даних';
-        });
-    }
+          this.cartMessage = 'Помилка отримання даних';                              
+        });                                                                         
+    },
+removeFromCart(cartId) {
+  axios.post(`http://localhost/Book-Store/backend/removeFromCart.php?book_id=${cartId}`)
+    .then(response => {
+      this.checkCart(this.user.id);
+      alert(response.data.message);
+    })
+    .catch(error => {
+      console.error('Помилка видалення:', error);
+    });
+}
   }
 };
 </script>
@@ -110,15 +120,20 @@ export default {
 .cart {
   display: flex;
   flex-direction: column;
-  width:1800px;
+  width: 1000px;
   margin: 0 auto;
-  margin-bottom:100px;
+  margin-bottom: 100px;
 }
 
 .book-info {
   display: flex;
+  justify-content: space-between;
   padding: 10px;
   border: 1px solid #ddd;
+}
+
+.book-details {
+  display: flex;
 }
 
 .book-cover {
@@ -132,43 +147,61 @@ export default {
   text-align: left;
 }
 
-.number{
+.number {
   font-size: 22px;
-  margin:10px;
+  margin: 10px;
 }
+
 .name {
   font-weight: lighter;
-  font-size:22px;
-  margin-bottom:-20px;
-  color:#333;
+  font-size: 22px;
+  margin-bottom: -20px;
+  color: #333;
 }
-.name:hover{
-  color:#ec70a8;
+
+.name:hover {
+  color: #ec70a8;
 }
+
 .author {
   color: rgb(59, 81, 126); 
   font-weight: lighter;
   font-size: 20px;
 }
 
-.quantity{
-  margin-top: 60px;
+.quantity {
+  margin-top: 5px;
   text-align: left;
   font-size: 20px;
 }
+
 .price {
   text-align: left;
   color: rgb(135, 24, 24);
   font-size: 20px;  
-  margin-top:100px;
+  margin-top: 100px;
+}
+
+.remove-btn {
+  box-shadow: 0px 4px 8px 2px rgba(0, 0, 0, 0.2);
+  border: none;
+  color: rgb(135, 24, 24);
+  font-size: 20px;
+  cursor: pointer;
+  align-self: flex-start;
+  margin-left: 20px;
+}
+
+.remove-btn:hover {
+  background-color: #ddd;
 }
 
 .total-price {
-  display:inline-block;
-  color:rgb(209, 43, 43);
+  display: inline-block;
+  color: rgb(209, 43, 43);
   margin-top: 50px;
   font-size: 22px;
-  padding:10px;
-  border-top:1px solid #666;
+  padding: 10px;
+  border-top: 1px solid #666;
 }
 </style>

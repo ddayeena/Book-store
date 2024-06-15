@@ -16,7 +16,7 @@ if ($conn->connect_error) {
 
 $user_id = $_GET['user_id'];
 
-$sql = "SELECT cart.id AS cart_id, cart.user_id, cart.total_price,
+$sql = "SELECT cart.id AS cart_id, cart.user_id, cart.total_price, cart_details.id AS cart_details_id,
                cart_details.book_id, cart_details.quantity, cart_details.unit_price,
                book.name, book.img_src, book.author 
         FROM cart
@@ -35,13 +35,12 @@ $cart_items = [];
 if ($result->num_rows > 0) {
     while ($row = $result->fetch_assoc()) {
         $cart_items[] = $row;
+        $total_price = $row['total_price'];
     }
 }
 
 $stmt->close();
 $conn->close();
-$total_price = array_reduce($cart_items, function($carry, $item) {
-    return $carry + ($item['quantity'] * $item['unit_price']);
-}, 0);
+
 echo json_encode(['cart_items' => $cart_items, 'total_price' => $total_price]);
 ?>
