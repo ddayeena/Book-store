@@ -4,15 +4,27 @@
     
     <div v-if="isAuthenticated && user">
       <p class="start">{{ cartMessage }}</p>
-      <ul v-if="cart_items.length > 0">
-        <li v-for="(cart_item, index) in cart_items" :key="cart_item.cart_id">
-          <p>Товар №{{ index + 1 }}</p>   
-          <p>Книга: {{ cart_item.book_name }}</p>
-          <p>Кількість: {{ cart_item.quantity }}</p>
-          <p>Ціна за одиницю: {{ cart_item.unit_price }} грн</p>
-        </li>
-      </ul>
-      <p v-if="cart_items.length > 0" class="total-price">Загальна вартість: {{ getTotalPrice() }} грн</p>
+
+      <div v-if="cart_items.length > 0">
+          <div v-for="(cart_item, index) in cart_items" :key="cart_item.cart_id" class="book-info">
+            
+            <p class="number">{{ index + 1 }}</p>   
+            <router-link :to="{ name: 'Book', params: { id: cart_item.book_id }}">
+              <img :src="cart_item.img_src" alt="Book Cover" class="book-cover">
+            </router-link>
+
+            <div class="details">
+              <router-link :to="{ name: 'Book', params: { id: cart_item.book_id }}">
+                <p class="name">{{ cart_item.name }}</p>
+              </router-link>
+              <p class="author">{{cart_item.author}}</p>
+              <p class="quantity">Кількість: {{ cart_item.quantity }}</p>
+              <p class="price">Ціна: <b>{{ cart_item.unit_price }}</b> грн</p>
+            </div>
+            
+          </div>
+      </div>
+      <p v-if="cart_items.length > 0" class="total-price"><b>РАЗОМ:</b> {{total_price }} грн</p>
     </div>
 
     <div v-else>
@@ -31,7 +43,8 @@ export default {
   data() {
     return {
       cartMessage: '', 
-      cart_items: [] 
+      cart_items: [],
+      total_price:0 
     };
   },
   computed: {
@@ -53,6 +66,7 @@ export default {
         .then(response => {
           if (response.data && response.data.cart_items) {
             this.cart_items = response.data.cart_items;
+            this.total_price = response.data.total_price;
             if (this.cart_items.length === 0) {
               this.cartMessage = 'У вас немає доданих книг';
             } else {
@@ -66,13 +80,6 @@ export default {
           console.error('Помилка запиту:', error);
           this.cartMessage = 'Помилка отримання даних';
         });
-    },
-    getTotalPrice() {
-      let totalPrice = 0;
-      this.cart_items.forEach(item => {
-        totalPrice += item.quantity * item.unit_price;
-      });
-      return totalPrice.toFixed(2); // Округлення до двох знаків після коми
     }
   }
 };
@@ -100,8 +107,68 @@ export default {
   background-color: #cb4d86;
 }
 
+.cart {
+  display: flex;
+  flex-direction: column;
+  width:1800px;
+  margin: 0 auto;
+  margin-bottom:100px;
+}
+
+.book-info {
+  display: flex;
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+.book-cover {
+  width: 200px;
+  height: 300px;
+  margin-right: 20px;
+  border-radius: 10px;
+}
+
+.details {
+  text-align: left;
+}
+
+.number{
+  font-size: 22px;
+  margin:10px;
+}
+.name {
+  font-weight: lighter;
+  font-size:22px;
+  margin-bottom:-20px;
+  color:#333;
+}
+.name:hover{
+  color:#ec70a8;
+}
+.author {
+  color: rgb(59, 81, 126); 
+  font-weight: lighter;
+  font-size: 20px;
+}
+
+.quantity{
+  margin-top: 60px;
+  text-align: left;
+  font-size: 20px;
+}
+.price {
+  text-align: left;
+  color: rgb(135, 24, 24);
+  font-size: 20px;  
+  margin-top:100px;
+}
+
 .total-price {
-  font-size: 18px;
-  margin-top: 10px;
+  display:inline-block;
+  color:rgb(209, 43, 43);
+  margin-top: 50px;
+  font-size: 22px;
+  padding:10px;
+  border-top:1px solid #666;
 }
 </style>
