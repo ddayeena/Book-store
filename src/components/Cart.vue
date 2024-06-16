@@ -36,6 +36,7 @@
       <p class="start">Ви не авторизовані. Будь ласка, увійдіть у свій кабінет для перегляду товарів</p>
       <router-link to="/login" class="login">Увійти</router-link>
     </div>
+
   </div>
 </template>
 
@@ -88,6 +89,10 @@ export default {
 removeFromCart(cartId) {
   axios.post(`http://localhost/Book-Store/backend/removeFromCart.php?book_id=${cartId}`)
     .then(response => {
+    const indexToRemove = this.cart_items.findIndex(item => item.cart_details_id === cartId);
+    if (indexToRemove !== -1) {
+      this.cart_items.splice(indexToRemove, 1);
+    }
       this.checkCart(this.user.id);
       alert(response.data.message);
     })
