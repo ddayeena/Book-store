@@ -7,24 +7,28 @@
 
       <div v-if="cart_items.length > 0">
         <div v-for="(cart_item, index) in cart_items" :key="cart_item.cart_id" class="book-info">
+
           <div class="book-details">
+            
             <p class="number">{{ index + 1 }}</p>   
             <router-link :to="{ name: 'Book', params: { id: cart_item.book_id }}">
               <img :src="cart_item.img_src" alt="Book Cover" class="book-cover">
             </router-link>
+
             <div class="details">
               <router-link :to="{ name: 'Book', params: { id: cart_item.book_id }}">
                 <p class="name">{{ cart_item.name }}</p>
               </router-link>
-              <p>{{cart_item.cart_id}}</p>
               <p class="author">{{cart_item.author}}</p>
               <p class="quantity">Кількість: {{ cart_item.quantity }}</p>
               <p class="price">Ціна: <b>{{ cart_item.unit_price }}</b> грн</p>
             </div>
           </div>
+
           <button class="remove-btn" @click="removeFromCart(cart_item.cart_details_id)">✖</button>
         </div>
       </div>
+
       <p v-if="cart_items.length > 0" class="total-price"><b>РАЗОМ:</b> {{ total_price }} грн</p>
     </div>
 
@@ -73,7 +77,7 @@ export default {
               this.cartMessage = `Додані книги до кошика: ${this.cart_items.length}`;
             }
           } else {
-            this.cartMessage = 'Дані про кошик недоступні';
+            this.cartMessage = 'У вас немає доданих книг';
           }
         })
         .catch(error => {

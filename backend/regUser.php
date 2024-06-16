@@ -48,14 +48,16 @@ if (isset($data['name']) && isset($data['password']) && isset($data['email'])) {
     } else {
         $sql = "INSERT INTO user (name, password, email) VALUES ('$name', '$password', '$email')";
         if ($conn->query($sql) === TRUE) {
+            $userId=$conn->insert_id;
             $sql1="SELECT created_at FROM user WHERE name='$name'";
             $result1 = $conn->query($sql1);
             $created_at=null;
             if($result1->num_rows>0){
                 $row=$result1->fetch_assoc();
-                $created_at=$row['created_at'];
+                $created_at=$row['created_at'];  
             }
             $user = [
+                'id'=>$userId,
                 'name' => $name,
                 'password' => $password,
                 'email' => $email,
