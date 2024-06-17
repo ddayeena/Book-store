@@ -20,13 +20,17 @@
                 <p class="name">{{ cart_item.name }}</p>
               </router-link>
               <p class="author">{{cart_item.author}}</p>
-              <p class="quantity">Кількість: {{ cart_item.quantity }}</p>
-              
+
+              <div class="quantity">
+                <button @click="removeFromCart(cart_item.cart_details_id)" class="quantity-btn">-</button>
+                <p class="quantity-text">Кількість:{{cart_item.quantity}}</p>
+                <button @click="addToCart(cart_item)" class="quantity-btn">+</button>
+              </div>
               <p class="price">Ціна: <b>{{ cart_item.price }}</b> грн</p>
             </div>
           </div>
 
-          <button class="remove-btn" @click="removeFromCart(cart_item.cart_details_id)">✖</button>
+          <button class="remove-btn" @click="removeAllFromCart(cart_item.cart_details_id)">✖</button>
         </div>
       </div>
 
@@ -99,11 +103,39 @@ export default {
           this.cart_items.splice(indexToRemove, 1);
         }
           this.checkCart(this.user.id);
-          alert(response.data.message);
+          console.log(response.data.message);
         })
         .catch(error => {
           console.error('Помилка видалення:', error);
         });
+    },
+  removeAllFromCart(cartId) {
+      axios.post(`http://localhost/Book-Store/backend/removeAllFromCart.php?cart_details_id=${cartId}`)
+        .then(response => {
+        const indexToRemove = this.cart_items.findIndex(item => item.cart_details_id === cartId);
+        if (indexToRemove !== -1) {
+          this.cart_items.splice(indexToRemove, 1);
+        }
+          this.checkCart(this.user.id);
+          console.log(response.data.message);
+        })
+        .catch(error => {
+          console.error('Помилка видалення:', error);
+        });
+    },
+    addToCart(cartItem) {
+      axios.post('http://localhost/Book-Store/backend/addToCart.php', {
+        user_id: this.user.id,
+        book_id: cartItem.book_id,
+        price: cartItem.price
+      })
+      .then(response => {
+        this.checkCart(this.user.id); 
+        console.log(response.data.message);
+      })
+      .catch(error => {
+        console.error('Помилка оновлення кількості:', error);
+      });
     },
     makeOrder(){
       this.$router.push('/order');
@@ -187,9 +219,22 @@ export default {
 }
 
 .quantity {
-  margin-top: 5px;
-  text-align: left;
+  margin-top:40px;
   font-size: 20px;
+  display:flex;
+  align-items: center; 
+}
+.quantity-text{
+  margin:0px 15px 0px 15px;
+}
+.quantity-btn{
+  width:30px;
+  height:30px;
+  border:1px solid #ddd;
+  background-color: none;
+}
+.quantity-btn:hover{
+  background-color: #ddd;
 }
 
 .price {
