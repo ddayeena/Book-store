@@ -15,9 +15,9 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$cart_details_id = $_GET['book_id']; 
+$cart_details_id = $_GET['cart_details_id']; 
 
-$sql = "SELECT cart_id, unit_price, quantity FROM cart_details WHERE id = ?";
+$sql = "SELECT cart_id, book_id FROM cart_details WHERE id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $cart_details_id);
 $stmt->execute();
@@ -25,8 +25,7 @@ $stmt->execute();
 $result = $stmt->get_result();
 if ($row = $result->fetch_assoc()) {
     $cart_id = $row['cart_id'];
-    $unit_price = $row['unit_price'];
-    $quantity = $row['quantity'];
+    $book_id=$row['book_id'];
 }
 $stmt->close();
 
@@ -35,6 +34,14 @@ if (!$cart_id) {
     $conn->close();
     exit();
 }
+$sql ="SELECT price FROM book WHERE id = ?;";
+$stmt=$conn->prepare($sql);
+$stmt->bind_param("i",$book_id);
+$stmt->execute();
+$result=$stmt->get_result();
+if ($row = $result->fetch_assoc()) {
+    $price = $row['price'];
+}
 
 //видалення запису з бази даних
 $sql = "DELETE FROM cart_details WHERE id = ?";
@@ -42,11 +49,10 @@ $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $cart_details_id);
 
 if ($stmt->execute()) {
-    $book_total_price = $unit_price * $quantity;
     //оновлення загальної суми кошика
     $sql = "UPDATE cart SET total_price = total_price - ? WHERE id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("di", $book_total_price, $cart_id);
+    $stmt->bind_param("di", $price, $cart_id);
 
     if ($stmt->execute()) {
         echo json_encode(['message' => 'Книга видалена з кошика']);

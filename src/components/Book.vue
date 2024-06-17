@@ -60,8 +60,7 @@ export default {
       axios.post('http://localhost/Book-Store/backend/addToCart.php', {
         user_id: this.user.id,
         book_id: this.book.id,
-        quantity: 1,
-        unit_price: this.book.price
+        price: this.book.price
       })
       .then(response => {
         alert(response.data.message);

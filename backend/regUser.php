@@ -28,6 +28,12 @@ if (isset($data['name']) && isset($data['password']) && isset($data['email'])) {
         exit();
     }
 
+    if(strlen($name)>20){
+        echo json_encode(["message" => "Логін має бути менше 20 символів"]);
+        $conn->close();
+        exit();
+    }
+
     if (strlen($password) < 6) {
         echo json_encode(["message" => "Пароль має бути більше 5 символів"]);
         $conn->close();
