@@ -63,7 +63,7 @@ export default {
         price: this.book.price
       })
       .then(response => {
-        console.log(response.data.message);
+        alert(response.data.message);
       })
       .catch(error => {
         console.error("There was an error!", error);
