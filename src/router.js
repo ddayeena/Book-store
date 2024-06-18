@@ -15,6 +15,7 @@ import Book from './components/Book.vue'
 import Register from './components/Register.vue'
 import LogIn from './components/LogIn.vue'
 import Order from './components/Order.vue'
+import OrderConfirmation from './components/OrderConfirmation.vue'
 
 export default createRouter({
     history: createWebHashHistory(),
@@ -34,5 +35,6 @@ export default createRouter({
         { path: '/register', component: Register},
         { path: '/login', component: LogIn},
         { path: '/order', component: Order},
+        { path: '/confirmation', component: OrderConfirmation}
     ]
 })
