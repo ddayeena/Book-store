@@ -42,17 +42,25 @@ $result=$stmt->get_result();
 if ($row = $result->fetch_assoc()) {
     $price = $row['price'];
 }
-
-//видалення запису з бази даних
-$sql = "DELETE FROM cart_details WHERE id = ?";
+$sql = "SELECT  COUNT(*) AS book_count FROM cart_details WHERE cart_id = ? AND book_id=?;";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $cart_details_id);
+$stmt->bind_param("ii",$cart_id, $book_id);
+$stmt->execute();
+$result=$stmt->get_result();
+if ($row = $result->fetch_assoc()) {
+    $book_count = $row['book_count'];
+}
+//видалення запису з бази даних
+$sql = "DELETE FROM cart_details WHERE book_id = ? AND cart_id = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("ii",$book_id, $cart_id);
 
 if ($stmt->execute()) {
     //оновлення загальної суми кошика
+    $old_price = $book_count*$price;
     $sql = "UPDATE cart SET total_price = total_price - ? WHERE id = ?";
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("di", $price, $cart_id);
+    $stmt->bind_param("di", $old_price, $cart_id);
 
     if ($stmt->execute()) {
         echo json_encode(['message' => 'Книга видалена з кошика']);

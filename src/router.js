@@ -14,6 +14,7 @@ import Comics from './components/catalog/Comics.vue'
 import Book from './components/Book.vue'
 import Register from './components/Register.vue'
 import LogIn from './components/LogIn.vue'
+import Order from './components/Order.vue'
 
 export default createRouter({
     history: createWebHashHistory(),
@@ -32,5 +33,6 @@ export default createRouter({
         { path: '/book', name: 'Book',component: Book, props: true},
         { path: '/register', component: Register},
         { path: '/login', component: LogIn},
+        { path: '/order', component: Order},
     ]
 })

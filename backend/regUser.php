@@ -22,8 +22,14 @@ if (isset($data['name']) && isset($data['password']) && isset($data['email'])) {
     $password = $conn->real_escape_string($data['password']);
     $email = $conn->real_escape_string($data['email']);
     
-    if(strlen($name)<3){
+    if (strlen($name) < 3) {
         echo json_encode(["message" => "Логін має бути більше 2 символів"]);
+        $conn->close();
+        exit();
+    }
+
+    if (strlen($name) > 20) {
+        echo json_encode(["message" => "Логін має бути менше 20 символів"]);
         $conn->close();
         exit();
     }
@@ -46,25 +52,26 @@ if (isset($data['name']) && isset($data['password']) && isset($data['email'])) {
     if ($result->num_rows > 0) {
         echo json_encode(["message" => "Логін або email вже існує"]);
     } else {
-        $sql = "INSERT INTO user (name, password, email) VALUES ('$name', '$password', '$email')";
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        $sql = "INSERT INTO user (name, password, email) VALUES ('$name', '$hashed_password', '$email')";
         if ($conn->query($sql) === TRUE) {
-            $userId=$conn->insert_id;
-            $sql1="SELECT created_at FROM user WHERE name='$name'";
+            $userId = $conn->insert_id;
+            $sql1 = "SELECT created_at FROM user WHERE id='$userId'";
             $result1 = $conn->query($sql1);
-            $created_at=null;
-            if($result1->num_rows>0){
-                $row=$result1->fetch_assoc();
-                $created_at=$row['created_at'];  
+            $created_at = null;
+            if ($result1->num_rows > 0) {
+                $row = $result1->fetch_assoc();
+                $created_at = $row['created_at'];  
             }
             $user = [
-                'id'=>$userId,
+                'id' => $userId,
                 'name' => $name,
-                'password' => $password,
+                'password' => $hashed_password,
                 'email' => $email,
-                'created_at'=>$created_at
+                'created_at' => $created_at
             ];
             $token = bin2hex(random_bytes(16));
-            echo json_encode(["message" => "Користувач зареєстрований успішно","token" => $token, "user" => $user]);
+            echo json_encode(["message" => "Користувач зареєстрований успішно", "token" => $token, "user" => $user]);
         } else {
             echo json_encode(["message" => "Помилка при реєстрації: " . $conn->error]);
         }

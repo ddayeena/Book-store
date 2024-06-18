@@ -20,9 +20,9 @@
           </div>
         </div>
         <router-link to="/novelty">Новинки</router-link>
-        <router-link to="/cart">Кошик</router-link>
         <router-link to="/about">Про нас</router-link>
-        <router-link to="/myprofile">Мій кабінет</router-link>
+        <router-link to="/cart" class="cart_opt">Кошик</router-link>
+        <router-link to="/myprofile" class="myprofile_opt">Мій кабінет</router-link>
         <button v-if="isAuthenticated" @click="logout" class="logout">Вийти</button>
       </nav>
     </header>
@@ -157,7 +157,19 @@ nav a:hover {
   color:#ec70a8;
   text-decoration:underline;
 }
+.cart_opt{
+  background-color:#ec70a8;
+  color:#fff;
+}
+.cart_opt:hover{
+  background-color:#fff;
+  color:#333;
+  border:1px solid#ec70a8;
 
+}
+.myprofile_opt{
+  border:1px solid#ec70a8;
+}
 main {
   padding: 20px;
   text-align: center;

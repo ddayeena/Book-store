@@ -17,18 +17,21 @@ if ($conn->connect_error) {
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-if (isset($data['name']) && isset($data['password']) && isset($data['email'])) {
+if (isset($data['name']) && isset($data['password'])) {
     $name = $conn->real_escape_string($data['name']);
-    $password = $conn->real_escape_string($data['password']);
-    $email = $conn->real_escape_string($data['email']);
+    $password = $data['password'];
 
-    $sql = "SELECT * FROM user WHERE name='$name' AND password='$password' AND email='$email'";
+    $sql = "SELECT * FROM user WHERE name='$name' OR email='$name'";
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {
         $user = $result->fetch_assoc();
-        $token = bin2hex(random_bytes(16));
-        echo json_encode(["message" => "Користувач знайдений", "token" => $token, "user" => $user]);
+        if (password_verify($password, $user['password'])) {
+            $token = bin2hex(random_bytes(16));
+            echo json_encode(["message" => "Користувач знайдений", "token" => $token, "user" => $user]);
+        } else {
+            echo json_encode(["message" => "Неправильний пароль"]);
+        }
     } else {
         echo json_encode(["message" => "Користувача не знайдено"]);
     }

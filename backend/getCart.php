@@ -16,13 +16,21 @@ if ($conn->connect_error) {
 
 $user_id = $_GET['user_id'];
 
-$sql = "SELECT cart.id AS cart_id, cart.user_id, cart.total_price, cart_details.id AS cart_details_id,
-               cart_details.book_id, cart_details.quantity, cart_details.unit_price,
-               book.name, book.img_src, book.author 
+$sql = "SELECT cart.id AS cart_id,
+        cart.user_id,
+        cart.total_price,
+        cart_details.id AS cart_details_id,
+        cart_details.book_id,
+        COUNT(cart_details.book_id) AS quantity,
+        book.price,
+        book.name,
+        book.img_src,
+        book.author
         FROM cart
         JOIN cart_details ON cart.id = cart_details.cart_id
         JOIN book ON cart_details.book_id = book.id
-        WHERE cart.user_id = ?";
+        WHERE cart.user_id = ?
+        GROUP BY cart_details.book_id";
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);
