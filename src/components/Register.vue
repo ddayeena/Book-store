@@ -29,6 +29,28 @@ export default {
     },
     methods: {
         sendData() {
+        if (this.userName < 3) {
+            this.error= "Логін має бути більше 2 символів";
+            return;
+        }
+
+        if (this.userName.length > 20) {
+            this.error="Логін має бути менше 20 символів";
+            return;
+
+        }
+
+        if (this.userPass.length < 6) {
+            this.error = "Пароль має бути більше 5 символів";
+            return;
+        }
+
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailPattern.test(this.userEmail)) {
+        this.error = "Некоректний формат email";
+        return;
+    }
+
             const userData = {
                 name: this.userName,
                 password: this.userPass,
