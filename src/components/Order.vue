@@ -1,5 +1,5 @@
 <template>
-  <h1>ОФОРМИТИ ПОКУПУКУ</h1>
+  <h1>ОФОРМИТИ ПОКУПКУ</h1>
   <div class="order">
     <div class="delivery">
         <p>Виберіть спосіб доставки:</p>
@@ -23,7 +23,7 @@
             <option value="Післяоплата">Післяоплата</option>
         </select>
         <div v-if="paymentType === 'Оплата картою'">
-          <input type="text" v-model="card" placeholder="Введіть номер карти" class="input-field">
+          <input type="text" v-model="card" placeholder="Введіть номер карти" class="input-field" @input="formatCardNumber">
         </div>
 
         <p>Сума замовлення - {{total_price}}</p>
@@ -32,6 +32,8 @@
     </div>
 
     <button class="next-btn" @click="makeOrder">Надіслати замовлення</button>
+
+    <p class="error">{{error}}</p>
   </div>
 </template>
 
@@ -50,7 +52,8 @@ export default {
       card: '',
       cart_items: [],
       total_price: 0,
-      deliveryCost: 64 
+      deliveryCost: 64,
+      error: '' 
     };
   },
   computed: {
@@ -73,7 +76,32 @@ export default {
     updateDeliveryCost() {
       this.deliveryCost = this.deliveryType === 'Нова пошта' ? 64 : 44;
     },
+    formatCardNumber() {
+      let cleaned = ('' + this.card).replace(/\D/g, '');
+      let match = cleaned.match(/.{1,4}/g);
+      if (match) {
+        this.card = match.join(' ');
+      }
+    },
     makeOrder() {
+      let cleanedCardNumber = this.card.replace(/\s+/g, '');
+
+      if (this.town.length < 2) {
+        this.error = "Введіть повну назву міста";
+        return;
+      }
+      if (this.street.length < 2) {
+        this.error = "Введіть повну назву вулиці";
+        return;
+      }
+      if ((this.street_number.length < 1 || this.street_number.length > 4)) {
+        this.error = "Введіть коректний номер вулиці";
+        return;
+      }
+      if (this.paymentType === 'Оплата картою' && (cleanedCardNumber.length !== 16 || isNaN(cleanedCardNumber))) {
+        this.error = "Номер карти повинен містити 16 цифр";
+        return;
+      }
 
       axios.post('http://localhost/Book-Store/backend/makeOrder.php', {
         user_id: this.user.id,
@@ -84,11 +112,14 @@ export default {
         town: this.town,
         street: this.street,
         street_number: this.street_number,
-        card: this.card
+        card: cleanedCardNumber
       })
       .then(response => {
-        console.log(response.data.message);
-        this.$router.push('/confirmation');
+        if (response.data.message === "Замовлення оформлене успішно") {
+          this.$router.push('/confirmation');
+        } else {
+          this.error = response.data.message;
+        }   
       })
       .catch(error => {
         console.error('Помилка оформлення замовлення:', error);
@@ -144,5 +175,11 @@ p {
 
 .next-btn:hover {
   background-color: #2e7531;
+}
+
+.error {
+  color: red;
+  margin-top: 5px;
+  font-size: 22px;
 }
 </style>
