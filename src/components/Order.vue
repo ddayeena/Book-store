@@ -1,39 +1,41 @@
 <template>
-  <h1>ОФОРМИТИ ПОКУПКУ</h1>
-  <div class="order">
-    <div class="delivery">
+  <div>
+    <h1>ОФОРМИТИ ПОКУПКУ</h1>
+    <form @submit.prevent="makeOrder" class="order">
+      <div class="delivery">
         <p>Виберіть спосіб доставки:</p>
         <select id="deliveryType" v-model="deliveryType" @change="updateDeliveryCost">
-            <option value="Нова пошта">Нова пошта</option>
-            <option value="Укр пошта">Укр пошта</option>
+          <option value="Нова пошта">Нова пошта</option>
+          <option value="Укр пошта">Укр пошта</option>
         </select>
-    </div>
+      </div>
 
-    <div class="address">
+      <div class="address">
         <p>Введіть адресу:</p>
-        <input type="text" v-model="town" placeholder="Введіть місто" class="input-field">
-        <input type="text" v-model="street" placeholder="Введіть вулицю" class="input-field">
-        <input type="text" v-model="street_number" placeholder="Введіть номер вулиці" class="input-field">
-    </div>
+        <input type="text" v-model="town" name="town" placeholder="Введіть місто" class="input-field" required>
+        <input type="text" v-model="street" name="street" placeholder="Введіть вулицю" class="input-field" required>
+        <input type="text" v-model="street_number" name="street_number" placeholder="Введіть номер вулиці" class="input-field" required>
+      </div>
 
-    <div class="payment">
+      <div class="payment">
         <p>Виберіть спосіб оплати:</p>
-        <select id="payment" v-model="paymentType">
-            <option value="Оплата картою">Оплата картою</option>
-            <option value="Післяоплата">Післяоплата</option>
+        <select id="payment" v-model="paymentType" name="paymentType" required>
+          <option value="Оплата картою">Оплата картою</option>
+          <option value="Післяоплата">Післяоплата</option>
         </select>
         <div v-if="paymentType === 'Оплата картою'">
-          <input type="text" v-model="card" placeholder="Введіть номер карти" class="input-field" @input="formatCardNumber">
+          <input type="text" v-model="card" name="card" placeholder="Введіть номер карти" class="input-field" @input="formatCardNumber">
         </div>
 
         <p>Сума замовлення - {{total_price}}</p>
         <p>Вартість доставки - {{ deliveryCost }} грн</p>
-        <p>Всього до сплати:{{ totalPriceWithDelivery }} грн</p>
-    </div>
+        <p>Всього до сплати: {{ totalPriceWithDelivery }} грн</p>
+      </div>
 
-    <button class="next-btn" @click="makeOrder">Надіслати замовлення</button>
+      <button type="submit" class="next-btn">Надіслати замовлення</button>
 
-    <p class="error">{{error}}</p>
+      <p class="error">{{ error }}</p>
+    </form>
   </div>
 </template>
 
@@ -136,6 +138,7 @@ export default {
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 8px;
+  margin-bottom: 200px;
 }
 
 h1 {

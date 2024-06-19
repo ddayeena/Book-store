@@ -2,20 +2,22 @@
     <div class="register">
         <h1>КАБІНЕТ</h1>
         <p class="start">Введіть дані для реєстрації</p>
-        <input type="text" v-model="userName" placeholder="Логін">
-        <input type="password" v-model="userPass" placeholder="Пароль">
-        <input type="email" v-model="userEmail" placeholder="Email">
-        <div class="acc">
-            <p class="quest">Вже є особиста сторінка?</p>
-            <router-link to="/login"><button class="log_but">Натисніть тут</button></router-link>
-        </div>
-        <p class="error">{{ error }}</p>
-        <button class="reg_but" @click="sendData">Зареєструватися</button>
+        <form @submit.prevent="sendData">
+            <input type="text" v-model="userName" name="userName" placeholder="Логін" required>
+            <input type="password" v-model="userPass" name="userPass" placeholder="Пароль" required>
+            <input type="email" v-model="userEmail" name="userEmail" placeholder="Email" required>
+            <div class="acc">
+                <p class="quest">Вже є особиста сторінка?</p>
+                <router-link to="/login"><button class="log_but">Натисніть тут</button></router-link>
+            </div>
+            <p class="error">{{ error }}</p>
+            <button type="submit" class="reg_but">Зареєструватися</button>
+        </form>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
+import axios from 'axios';  
 import { setToken, setUser } from '@/auth';
 
 export default {
@@ -29,7 +31,7 @@ export default {
     },
     methods: {
         sendData() {
-        if (this.userName < 3) {
+        if (this.userName.length < 3) {
             this.error= "Логін має бути більше 2 символів";
             return;
         }
@@ -37,19 +39,12 @@ export default {
         if (this.userName.length > 20) {
             this.error="Логін має бути менше 20 символів";
             return;
-
         }
 
         if (this.userPass.length < 6) {
             this.error = "Пароль має бути більше 5 символів";
             return;
         }
-
-    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailPattern.test(this.userEmail)) {
-        this.error = "Некоректний формат email";
-        return;
-    }
 
             const userData = {
                 name: this.userName,
