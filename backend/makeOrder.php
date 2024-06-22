@@ -61,6 +61,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $sql = "INSERT INTO order_details (order_id, book_id) VALUES (?, ?)";
     $stmt = $conn->prepare($sql);
     foreach ($cart_items as $cart_item) {
+        for($i = 0; $i<$cart_item['quantity'];$i++ ){
         if (!isset($cart_item['book_id']) || !is_numeric($cart_item['book_id'])) {
             echo json_encode(["message" => "Некоректний ідентифікатор книги"]);
             $stmt->close();
@@ -75,6 +76,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $conn->close();
             exit();
         }
+    }
     }
     $cart_id = $cart_items[0]['cart_id'];
 

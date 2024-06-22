@@ -34,7 +34,7 @@ $sql = "SELECT orders.id AS order_id,
         JOIN order_details ON orders.id = order_details.order_id
         JOIN book ON order_details.book_id = book.id
         WHERE orders.user_id = ?
-        GROUP BY order_details.book_id";
+        GROUP BY order_details.order_id,order_details.book_id;";
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);

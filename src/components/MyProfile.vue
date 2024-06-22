@@ -107,6 +107,9 @@ export default {
 </script>
 
 <style scoped>
+.myprofile{
+  margin-bottom: 200px;
+}
 .start {
   color: #666;
   font-size: 22px;
