@@ -3,7 +3,7 @@
     <h1>Замовлення підтверджено!</h1>
     <p class="start">Дякуємо за вашу покупку</p>
     <img src="/src/assets/smile.jpg" alt="smile-photo">
-    <p class="start">На ваш email надійшло повідомлення про підтвердження замовлення та його деталі! </p>
+    <p class="start">У вашому кабінеті з'явилось нове замовлення! Очікуйте на його підтвердження</p>
 
     <router-link to="/catalog" ><button class="back-to-catalog">Назад до покупок</button></router-link>
 </div>

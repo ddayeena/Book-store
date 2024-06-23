@@ -23,6 +23,7 @@ if ($conn->connect_error) {
 }
 
 $sql_items = "SELECT 
+                book.id as book_id,
                 book.name AS book_name,
                 book.author AS book_author,
                 book.price AS book_price,
