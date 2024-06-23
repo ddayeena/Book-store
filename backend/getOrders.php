@@ -18,7 +18,6 @@ $user_id = $_GET['user_id'];
 
 $sql = "SELECT 
         orders.id AS order_id,
-        orders.user_id,
         orders.order_date,
         orders.total_price,
         orders.delivery_id,

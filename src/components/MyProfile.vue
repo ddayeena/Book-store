@@ -30,9 +30,11 @@
 
         <div v-if="orders.length > 0" class="order-info">
           <h2>Ваші замовлення</h2>
-          <p v-if="orders.length === 0">У вас немає замовлень</p>
           <div v-for="(order, index) in orders" :key="order.order_id" class="order-item">
+          <router-link :to="{name:'OrderDetails', params:{order_id: order.order_id}}">
+
             <div class="order-details">
+
               <div class="order-extra-details">
               <p class="order-number">Замовлення №{{ index+1}}</p>
                 <p class="order-details-text">
@@ -43,14 +45,17 @@
                 <p class="order-details-text">
                   Дата замовлення: {{ order.order_date }}<br>
                   Тип оплати: {{ order.payment_method }}<br>
+                  Сума замовлення: {{order.total_price}}
                 </p>
                 <div class="status-square">{{ order.status }}</div>
               </div>
+
             </div>
+          </router-link>
+
           </div>
         </div>
-
-    </div>
+  </div>
 
     <div v-else>
       <h1>КАБІНЕТ</h1>
@@ -165,6 +170,10 @@ export default {
 
 .order-item:hover{
   background-color: rgb(206, 206, 206);
+}
+a{
+  text-decoration: none;
+  color:#333;
 }
 
 .order-number {
