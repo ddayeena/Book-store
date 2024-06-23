@@ -32,7 +32,7 @@
           <td>Спосіб оплати:</td>
           <td>{{order_details.payment_method}}</td>
         </tr>
-        <tr>
+        <tr class="total-price">
           <td>Всього до сплати:</td>
           <td>{{order_details.total_price}} грн</td>
         </tr>
@@ -162,7 +162,11 @@ export default {
   font-size:18px;
   text-align:left;
 }
-
+.total-price{
+  color:rgb(170, 32, 32);
+  font-weight:bold;
+  text-decoration: underline;
+}
 .order-info p {
   margin: 5px 0;
 }

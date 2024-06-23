@@ -5,6 +5,7 @@
       <div class="book-info">
         <h1 class="name">{{ book.name }}</h1>
         <h3 class="author">{{ book.author }}</h3>
+        <p class="genre">{{book.genre_name}}</p>
         <div class="price-buy">
           <p class="price"><b>{{ book.price }}</b> грн</p>
           <button class="buy-button" @click="buyBook">До кошика</button>
@@ -108,6 +109,11 @@ export default {
   font-weight: lighter;
   font-size: 22px;
   margin-top: 10px;
+}
+
+.genre{
+  font-size:20px;
+  color:#333;
 }
 
 .name {
