@@ -21,30 +21,6 @@ if (isset($data['name']) && isset($data['password']) && isset($data['email'])) {
     $name = $conn->real_escape_string($data['name']);
     $password = $conn->real_escape_string($data['password']);
     $email = $conn->real_escape_string($data['email']);
-    
-    if (strlen($name) < 3) {
-        echo json_encode(["message" => "Логін має бути більше 2 символів"]);
-        $conn->close();
-        exit();
-    }
-
-    if (strlen($name) > 20) {
-        echo json_encode(["message" => "Логін має бути менше 20 символів"]);
-        $conn->close();
-        exit();
-    }
-
-    if (strlen($password) < 6) {
-        echo json_encode(["message" => "Пароль має бути більше 5 символів"]);
-        $conn->close();
-        exit();
-    }
-
-    if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-        echo json_encode(["message" => "Некоректний формат email"]);
-        $conn->close();
-        exit();
-    }
 
     $checkUser = "SELECT * FROM user WHERE name='$name' OR email='$email'";
     $result = $conn->query($checkUser);

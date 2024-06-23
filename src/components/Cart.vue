@@ -138,8 +138,10 @@ export default {
       });
     },
     makeOrder(){
-      this.$router.push('/order');
-    }
+    const cartItemsString = encodeURIComponent(JSON.stringify(this.cart_items));
+    const totalPrice = this.total_price;
+    this.$router.push({ path: '/order', query: { cartItems: cartItemsString, totalPrice } });
+  }
   }
 };
 </script>

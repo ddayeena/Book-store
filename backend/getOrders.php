@@ -16,13 +16,22 @@ if ($conn->connect_error) {
 
 $user_id = $_GET['user_id'];
 
-$sql = "SELECT orders.id AS order_id, orders.order_date, orders.total_price, orders.status,
-               order_details.book_id, order_details.quantity, order_details.unit_price,
-               book.name AS book_name
+$sql = "SELECT 
+        orders.id AS order_id,
+        orders.order_date,
+        orders.total_price,
+        orders.delivery_id,
+        orders.status,
+        orders.payment_method,
+        delivery.town,
+        delivery.street,
+        delivery.street_number,
+        delivery.type
         FROM orders
         JOIN order_details ON orders.id = order_details.order_id
-        JOIN book ON order_details.book_id = book.id
-        WHERE orders.user_id = ?";
+        JOIN delivery ON orders.delivery_id = delivery.id
+        WHERE orders.user_id = ?
+        GROUP BY orders.id;";
 
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $user_id);

@@ -2,15 +2,17 @@
     <div class="login">
         <h1>КАБІНЕТ</h1>
         <p class="start">Введіть дані для авторизації</p>
-        <input type="text" v-model="userName" placeholder="Логін">
-        <input type="password" v-model="userPass" placeholder="Пароль">
-        <input type="email" v-model="userEmail" placeholder="Email">
-        <div class="new_acc">
-            <p class="quest">Ще не створили власну сторінку?</p>
-            <router-link to="/register"><button class="reg_but">Натисніть тут</button></router-link>
-        </div>
-        <p class="error">{{ error }}</p>
-        <button class="log_but" @click="sendData">Увійти</button>
+        <form @submit.prevent="sendData">
+            <input type="text" v-model="userName" name="userName" placeholder="Логін" required>
+            <input type="password" v-model="userPass" name="userPass" placeholder="Пароль" required>
+            <input type="email" v-model="userEmail" name="userEmail" placeholder="Email" required>
+            <div class="new_acc">
+                <p class="quest">Ще не створили власну сторінку?</p>
+                <router-link to="/register"><button class="reg_but">Натисніть тут</button></router-link>
+            </div>
+            <p class="error">{{ error }}</p>
+            <button type="submit" class="log_but">Увійти</button>
+        </form>
     </div>
 </template>
 
