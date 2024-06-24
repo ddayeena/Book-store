@@ -58,5 +58,32 @@
   a h3:hover{
     color:#ec70a8;
   }
+
+  .search-bar {
+    margin-bottom: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    font-size:22px;
+    padding: 10px 10px 10px 50px;
+  }
+  
+  .search-text{
+    font-size:20px;
+    color:brown;
+    font-style: italic;
+  }
   
 
+  .search-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+  
+  .search-icon {
+    position: absolute;
+    left: 10px;
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #aaa;
+  }
