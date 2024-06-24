@@ -1,8 +1,7 @@
 <template>
   <div class="order-details-container">
-    <h1>ВАШЕ ЗАМОВЛЕННЯ</h1>
     <div class="order-details">
-      <h2>Деталі замовлення</h2>
+      <h2>Деталі замовлення!!!</h2>
       <table>
         <tr>
             <th>Поле</th>

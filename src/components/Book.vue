@@ -44,7 +44,7 @@ export default {
   },
   methods: {
     fetchBook() {
-      axios.get(`http://localhost/Book-Store/backend/getBook.php?id=${this.id}`)
+      axios.get(`http://localhost/Book-Store/database/getBook.php?id=${this.id}`)
         .then(response => {
           this.book = response.data;
         })
@@ -58,7 +58,7 @@ export default {
         return;
       }
 
-      axios.post('http://localhost/Book-Store/backend/addToCart.php', {
+      axios.post('http://localhost/Book-Store/database/addToCart.php', {
         user_id: this.user.id,
         book_id: this.book.id,
         price: this.book.price

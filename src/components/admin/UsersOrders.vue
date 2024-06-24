@@ -1,43 +1,20 @@
 <template>
   <div class="profile-container">
-    <div v-if="isAuthenticated">
-      <div class="profile-header">
-        <h1>КАБІНЕТ</h1>
-        <p class="start">Вітаємо, {{ user.name }}! Ласкаво просимо до вашого особистого кабінету!</p>
-      </div>
 
-      <div class="user-info-section">
-        <h2>Основна інформація</h2>
-        <table class="user-info-table">
-          <tr>
-            <th>Поле</th>
-            <th>Значення</th>
-          </tr>
-          <tr>
-            <td>Логін</td>
-            <td>{{ user.name }}</td>
-          </tr>
-          <tr>
-            <td>Email</td>
-            <td>{{ user.email }}</td>
-          </tr>
-          <tr>
-            <td>Дата приєднання</td>
-            <td>{{ user.created_at }}</td>
-          </tr>
-        </table>
-      </div>
 
         <div class="order-info">
-        <h2>Ваші замовлення</h2>
+        <h2>Замовлення</h2>
             <div v-if="orders.length > 0">
               <div v-for="(order, index) in orders" :key="order.order_id" class="order-item">
-              <router-link :to="{name:'OrderDetails', params:{order_id: order.order_id}}">
+              <router-link :to="{name:'ManageOrder', params:{order_id: order.order_id}}">
 
                 <div class="order-details">
 
                   <div class="order-extra-details">
                   <p class="order-number">Замовлення №{{ index+1}}</p>
+                    <p class="order-details-text">
+                        ID користувача: {{order.user_id}}
+                    </p>
                     <p class="order-details-text">
                       Місто: {{ order.town }}<br>
                       Вулиця: {{ order.street }} {{ order.street_number }}<br>
@@ -58,13 +35,7 @@
             <div v-if="orders.length==0" class="start">У вас немає замовлень</div>
        </div>
 
-  </div>
 
-    <div v-else>
-      <h1>КАБІНЕТ</h1>
-      <p class="start">Ви не авторизовані. Будь ласка, увійдіть у свій кабінет.</p>
-      <router-link to="/login" class="login-button">Увійти</router-link>
-    </div>
   </div>
 </template>
 
@@ -94,7 +65,7 @@ export default {
   },
   methods: {
     fetchOrders(userId) {
-      axios.get(`http://localhost/Book-Store/database/getOrders.php?user_id=${userId}`)
+      axios.get(`http://localhost/Book-Store/database/getAllOrders.php?user_id`)
         .then(response => {
           if (response.data && response.data.orders) {
             this.orders = response.data.orders;

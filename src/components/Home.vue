@@ -50,7 +50,7 @@ export default {
   },
   methods: {
     fetchBooks() {
-      axios.get('http://localhost/Book-Store/backend/getNovelty.php')
+      axios.get('http://localhost/Book-Store/database/getNovelty.php')
         .then(response => {
           this.books = response.data;
           this.updateVisibleBooks();

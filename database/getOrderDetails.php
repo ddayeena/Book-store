@@ -8,11 +8,6 @@ $username = "root";
 $password = "";
 $dbname = "bookstore";
 
-if (!isset($_GET['user_id']) || !isset($_GET['order_id'])) {
-    echo json_encode(['error' => 'user_id and order_id must be provided']);
-    exit;
-}
-
 $user_id = $_GET['user_id'];
 $order_id = $_GET['order_id'];
 

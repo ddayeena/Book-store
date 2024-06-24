@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     fetchBooks() {
-      axios.get('http://localhost/Book-Store/backend/getBooksByGenre.php?genre_id=5')
+      axios.get('http://localhost/Book-Store/database/getBooksByGenre.php?genre_id=5')
         .then(response => {
           this.books = response.data;
         })

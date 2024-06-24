@@ -18,6 +18,11 @@ import Order from './components/order/Order.vue'
 import OrderConfirmation from './components/order/OrderConfirmation.vue'
 import OrderDetails from './components/order/OrderDetails.vue'
 
+import UsersOrders from './components/admin/UsersOrders.vue'
+import LogAdmin from './components/admin/LogAdmin.vue'
+import RegAdmin from './components/admin/RegAdmin.vue'
+import ManageOrder from './components/admin/ManageOrder.vue'
+
 export default createRouter({
     history: createWebHashHistory(),
     routes:[
@@ -37,6 +42,11 @@ export default createRouter({
         { path: '/login', component: LogIn},
         { path: '/order', component: Order},
         { path: '/confirmation', component: OrderConfirmation},
-        { path: '/order-details' , name:'OrderDetails', component: OrderDetails, props:true}
+        { path: '/order-details' , name:'OrderDetails', component: OrderDetails, props:true},
+
+        { path: '/users-orders', name:'UsersOrders', component: UsersOrders, meta: {layout: 'full-page'}},
+        { path: '/admin',name:'LogAdmin', component: LogAdmin,meta: {layout: 'full-page'}},
+        { path: '/manage-order', name:'ManageOrder', component: ManageOrder, meta:{layout:'full-page'}},
+        { path: '/reg-admin', name:'RegAdmin', component: RegAdmin, meta:{layout:'full-page'}}
     ]
 })

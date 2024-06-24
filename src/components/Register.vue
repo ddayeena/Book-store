@@ -49,10 +49,11 @@ export default {
             const userData = {
                 name: this.userName,
                 password: this.userPass,
-                email: this.userEmail
+                email: this.userEmail,
+                role: 'user'
             };
 
-            const url = 'http://localhost/Book-Store/backend/regUser.php'; 
+            const url = 'http://localhost/Book-Store/database/regUser.php'; 
 
             axios.post(url, userData, {
                 headers: {

@@ -17,10 +17,11 @@ if ($conn->connect_error) {
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-if (isset($data['name']) && isset($data['password']) && isset($data['email'])) {
+if (isset($data['name']) && isset($data['password']) && isset($data['email']) && isset($data['role'])) {
     $name = $conn->real_escape_string($data['name']);
     $password = $conn->real_escape_string($data['password']);
     $email = $conn->real_escape_string($data['email']);
+    $role = $conn->real_escape_string($data['role']);
 
     $checkUser = "SELECT * FROM user WHERE name='$name' OR email='$email'";
     $result = $conn->query($checkUser);
@@ -29,7 +30,7 @@ if (isset($data['name']) && isset($data['password']) && isset($data['email'])) {
         echo json_encode(["message" => "Логін або email вже існує"]);
     } else {
         $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-        $sql = "INSERT INTO user (name, password, email) VALUES ('$name', '$hashed_password', '$email')";
+        $sql = "INSERT INTO user (name, password, email, role) VALUES ('$name', '$hashed_password', '$email', '$role')";
         if ($conn->query($sql) === TRUE) {
             $userId = $conn->insert_id;
             $sql1 = "SELECT created_at FROM user WHERE id='$userId'";
@@ -44,6 +45,7 @@ if (isset($data['name']) && isset($data['password']) && isset($data['email'])) {
                 'name' => $name,
                 'password' => $hashed_password,
                 'email' => $email,
+                'role' => $role,
                 'created_at' => $created_at
             ];
             $token = bin2hex(random_bytes(16));

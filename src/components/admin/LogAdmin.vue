@@ -1,14 +1,14 @@
 <template>
     <div class="login">
-        <h1>КАБІНЕТ</h1>
+        <h1>АВТОРИЗАЦІЯ</h1>
         <p class="start">Введіть дані для авторизації</p>
         <form @submit.prevent="sendData">
             <input type="text" v-model="userName" name="userName" placeholder="Логін" required>
             <input type="password" v-model="userPass" name="userPass" placeholder="Пароль" required>
             <input type="email" v-model="userEmail" name="userEmail" placeholder="Email" required>
             <div class="new_acc">
-                <p class="quest">Ще не створили власну сторінку?</p>
-                <router-link to="/register"><button class="reg_but">Натисніть тут</button></router-link>
+                <p class="quest">Ще не створили власну стрінку?</p>
+                <router-link to="/reg-admin"><button class="reg_but">Натисніть тут</button></router-link>
             </div>
             <p class="error">{{ error }}</p>
             <button type="submit" class="log_but">Увійти</button>
@@ -35,7 +35,7 @@ export default {
                 name: this.userName,
                 password: this.userPass,
                 email: this.userEmail,
-                role: 'user'
+                role: 'admin'
             };
 
             const url = 'http://localhost/Book-Store/database/checkUser.php';
@@ -49,7 +49,7 @@ export default {
                     if (response.data.message === "Користувач знайдений") {
                         setToken(response.data.token);
                         setUser(response.data.user); 
-                        this.$router.push('/myprofile');
+                        this.$router.push('/users-orders');
                     } else {
                         this.error = response.data.message;
                     }
