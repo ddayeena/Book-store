@@ -1,11 +1,6 @@
 <template>
   <div class="profile-container">
     <div v-if="isAdminAuthenticated">
-      <header>
-        <button v-if="isAdminAuthenticated" @click="logoutAdmin" class="logout">Вийти</button>
-      </header>
-
-
       <div class="welcome">
         <p class="start">Вітаємо, {{ admin.name }}!</p>
       </div>
@@ -103,36 +98,11 @@ export default {
 };
 </script>
 <style scoped>
-header {
-  background-color: #999;
-  width: 100%;
-  height: 100px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  left:0;
-  right:0;
-}
+
 
 .profile-container {
   text-align: center;
-  
-}
-
-.logout {
-  margin-right:10px;
-  padding: 10px 20px;
-  background: none;
-  border: none;
-  font-size: 20px;
-  cursor: pointer;
-  border-left: 1px solid #777;
-  transition: background-color 0.5s;
-  color:#333;
-}
-
-.logout:hover {
-  background-color: #666; 
+  margin-bottom:100px;
 }
 
 .start {

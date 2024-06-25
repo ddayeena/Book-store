@@ -144,8 +144,7 @@ export default {
   color:#666;
 }
 .order-details-container {
-  margin:50px 0px 50px 0px;
-
+  margin:50px 0px 100px 0px;
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
