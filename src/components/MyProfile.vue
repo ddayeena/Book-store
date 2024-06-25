@@ -48,7 +48,8 @@
                       Тип оплати: {{ order.payment_method }}<br>
                       Сума замовлення: {{order.total_price}}
                     </p>
-                    <div class="status-square">{{ order.status }}</div>
+                    <div v-if="order.status==='В процесі'" class="status-square-process">{{order.status}}</div>
+                    <div v-if="order.status==='Доставлено'" class="status-square-done">{{order.status}} </div>
                   </div>
 
                 </div>
@@ -200,10 +201,20 @@ a{
   text-align: justify;
 }
 
-.status-square {
+.status-square-process {
   padding: 10px 15px;
   border-radius: 5px;
   background-color: #4CAF50;
+  color: #fff;
+  min-width: 100px;
+  font-weight: bold;
+  justify-content: center;
+}
+
+.status-square-done {
+  padding: 10px 15px;
+  border-radius: 5px;
+  background-color: rgb(50, 50, 150);
   color: #fff;
   min-width: 100px;
   font-weight: bold;

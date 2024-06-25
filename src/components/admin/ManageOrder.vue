@@ -1,11 +1,21 @@
 <template>
   <div class="order-details-container">
+    
+     <router-link to="/admin"><p class="back">НАЗАД</p></router-link>
     <div class="order-details">
       <h2>Деталі замовлення</h2>
       <table>
         <tr>
           <th>Поле</th>
           <th>Значення</th>
+        </tr>
+        <tr>
+          <td>ID користувача:</td>
+          <td>{{ user_id }}</td>
+        </tr>
+        <tr>
+          <td>Ім'я користувача:</td>
+          <td>{{ order_details.user_name }}</td>
         </tr>
         <tr>
           <td>Статус:</td>
@@ -50,6 +60,15 @@
       </div>
 
     </div>
+
+    <div v-if="order_details.status==='В процесі'" class="confirm-order">
+      <button class="confrim-order-btn" @click="sendOrder">Надіслати замовлення</button>
+    </div>
+
+    <div v-if="order_details.status ==='Доставлено'" class="confirm-order">
+        <button class="finish-order-btn">Замовлення доставлене успішно</button>
+    </div>
+
   </div>
 </template>
 
@@ -94,17 +113,43 @@ export default {
         console.error("There was an error!", error);
       });
     },
+    sendOrder(){
+      axios.post('http://localhost/Book-Store/database/sendOrder.php', {
+        order_id: this.order_id
+      })
+      .then(response => {
+        if(response.data.message){
+          this.order_details.status = 'Доставлено';
+          console.log(response.data.message);
+        }
+      })
+      .catch(error => {
+        console.error("There was an error!", error);
+      });
+    },
   }
 };
 </script>
 
 <style scoped>
+.back{
+  font-size:22px;
+  color:#333;
+  font-weight:bold;
+  border-right: 1px solid #333;
+  display:inline-block; 
+  padding:10px;
+}
+.back:hover{
+  color:#666;
+}
 .order-details-container {
-  margin-bottom: 200px;
+  margin:50px 0px 50px 0px;
+
   padding: 20px;
   background-color: #f9f9f9;
   border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  box-shadow: 0px 4px 10px 4px rgba(0,0,0,0.1);
 }
 
 .order-details {
@@ -179,5 +224,34 @@ export default {
 .book-author {
   font-size: 20px;
   color: rgb(59, 81, 126); 
+}
+
+.confrim-order-btn{
+  margin-top:50px;
+  padding: 20px 30px;
+  background-color: #4CAF50;
+  color: #fff;
+  border-radius: 5px;
+  border-style: none;
+  cursor: pointer;
+  transition: background-color 0.5s;
+  font-size:22px;
+}
+
+.confrim-order-btn:hover {
+  background-color: #2e7531;
+}
+
+.finish-order-btn{
+  margin-top:50px;
+  padding: 20px 30px;
+  background-color: rgb(90, 90, 190);
+  border:5px solid black;
+  color: #999;
+  border-radius: 5px;
+  border-style: none;
+  cursor: pointer;
+  transition: background-border 0.5s;
+  font-size:22px;
 }
 </style>

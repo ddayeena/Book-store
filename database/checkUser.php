@@ -32,7 +32,7 @@ if (isset($data['name']) && isset($data['password']) && isset($data['role']) && 
             $token = bin2hex(random_bytes(16));
             echo json_encode(["message" => "Користувач знайдений", "token" => $token, "user" => $user]);
         } else {
-            echo json_encode(["message" => "Невірний пароль"]);
+            echo json_encode(["message" => "Користувача не знайдено"]);
         }
     } else {
         echo json_encode(["message" => "Користувача не знайдено"]);

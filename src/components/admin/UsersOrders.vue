@@ -1,11 +1,13 @@
 <template>
   <div class="profile-container">
     <div v-if="isAdminAuthenticated">
-
-
-      <div class="profile-header">
-        <p class="start">Вітаємо, {{ admin.name }}! Ласкаво просимо!</p>
+      <header>
         <button v-if="isAdminAuthenticated" @click="logoutAdmin" class="logout">Вийти</button>
+      </header>
+
+
+      <div class="welcome">
+        <p class="start">Вітаємо, {{ admin.name }}!</p>
       </div>
 
         <div class="order-info">
@@ -17,7 +19,10 @@
                 <div class="order-details">
 
                   <div class="order-extra-details">
-                  <p class="order-number">Замовлення №{{ index+1}}</p>
+                    <p class="order-number">Замовлення №{{ index+1}}</p>
+                    <p class="order-details-text">
+                      ID користувача: {{order.user_id}}
+                    </p>
                     <p class="order-details-text">
                       Місто: {{ order.town }}<br>
                       Вулиця: {{ order.street }} {{ order.street_number }}<br>
@@ -28,7 +33,8 @@
                       Тип оплати: {{ order.payment_method }}<br>
                       Сума замовлення: {{order.total_price}}
                     </p>
-                    <div class="status-square">{{ order.status }}</div>
+                    <div v-if="order.status==='В процесі'" class="status-square-process">{{order.status}}</div>
+                    <div v-if="order.status==='Доставлено'" class="status-square-done">{{order.status}} </div>
                   </div>
 
                 </div>
@@ -97,14 +103,43 @@ export default {
 };
 </script>
 <style scoped>
+header {
+  background-color: #999;
+  width: 100%;
+  height: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  left:0;
+  right:0;
+}
+
 .profile-container {
-  margin-top:100px;
-  text-align:center;
+  text-align: center;
+  
+}
+
+.logout {
+  margin-right:10px;
+  padding: 10px 20px;
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  border-left: 1px solid #777;
+  transition: background-color 0.5s;
+  color:#333;
+}
+
+.logout:hover {
+  background-color: #666; 
 }
 
 .start {
   color: #666;
   font-size: 26px;
+  text-align: center;
+  margin-top: 20px; 
 }
 
 .login-button {
@@ -135,12 +170,13 @@ export default {
   transition: background-color 0.5s;
 }
 
-.order-item:hover{
+.order-item:hover {
   background-color: rgb(206, 206, 206);
 }
-a{
+
+a {
   text-decoration: none;
-  color:#333;
+  color: #333;
 }
 
 .order-number {
@@ -164,10 +200,20 @@ a{
   text-align: justify;
 }
 
-.status-square {
+.status-square-process {
   padding: 10px 15px;
   border-radius: 5px;
-  background-color: #4CAF50;
+  background-color: #4caf50;
+  color: #fff;
+  min-width: 100px;
+  font-weight: bold;
+  justify-content: center;
+}
+
+.status-square-done {
+  padding: 10px 15px;
+  border-radius: 5px;
+  background-color: rgb(50, 50, 150);
   color: #fff;
   min-width: 100px;
   font-weight: bold;

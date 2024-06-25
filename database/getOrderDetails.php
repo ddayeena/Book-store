@@ -54,10 +54,12 @@ $sql_details = "SELECT
                   delivery.town,
                   delivery.street,
                   delivery.street_number,
-                  delivery.type
+                  delivery.type,
+                  user.name AS user_name
                FROM orders
                JOIN order_details ON orders.id = order_details.order_id
                JOIN delivery ON orders.delivery_id = delivery.id
+               JOIN user ON orders.user_id = user.id
                WHERE orders.user_id = ? AND order_details.order_id = ?
                GROUP BY orders.id";
 

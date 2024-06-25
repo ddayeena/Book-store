@@ -58,6 +58,7 @@
 
 <script>
 import axios from 'axios';
+import { isUserAuthenticated, getUser } from '@/auth';
 
 export default {
   props: ['order_id'],
@@ -67,10 +68,18 @@ export default {
       order_details: {}
     };
   },
+  computed: {
+    isUserAuthenticated() {
+      return isUserAuthenticated();
+    },
+    user() {
+      return getUser(); 
+    }
+  },
   created() {
-    
+    if (this.isUserAuthenticated) {
       this.getOrder();
-    
+    }
   },
   methods: {
     getOrder() {
