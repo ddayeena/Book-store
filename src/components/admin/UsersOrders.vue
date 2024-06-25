@@ -1,20 +1,23 @@
 <template>
   <div class="profile-container">
+    <div v-if="isAdminAuthenticated">
 
+
+      <div class="profile-header">
+        <p class="start">Вітаємо, {{ admin.name }}! Ласкаво просимо!</p>
+        <button v-if="isAdminAuthenticated" @click="logoutAdmin" class="logout">Вийти</button>
+      </div>
 
         <div class="order-info">
-        <h2>Замовлення</h2>
+        <h1>ЗАМОВЛЕННЯ</h1>
             <div v-if="orders.length > 0">
               <div v-for="(order, index) in orders" :key="order.order_id" class="order-item">
-              <router-link :to="{name:'ManageOrder', params:{order_id: order.order_id}}">
+              <router-link :to="{name:'ManageOrder', params:{order_id: order.order_id, user_id: order.user_id}}">
 
                 <div class="order-details">
 
                   <div class="order-extra-details">
                   <p class="order-number">Замовлення №{{ index+1}}</p>
-                    <p class="order-details-text">
-                        ID користувача: {{order.user_id}}
-                    </p>
                     <p class="order-details-text">
                       Місто: {{ order.town }}<br>
                       Вулиця: {{ order.street }} {{ order.street_number }}<br>
@@ -37,11 +40,18 @@
 
 
   </div>
+
+    <div v-else>
+      <h1>АДМІН</h1>
+      <p class="start">Ви не авторизовані. Будь ласка, увійдіть у свій кабінет.</p>
+      <router-link to="/log-admin" class="login-button">Увійти</router-link>
+    </div>
+  </div>
 </template>
 
 <script>
 import axios from 'axios';
-import { isAuthenticated, getUser } from '@/auth';
+import { isAdminAuthenticated, getAdmin, logoutAdmin } from '@/auth';
 
 export default {
   data() {
@@ -51,21 +61,25 @@ export default {
     };
   },
   computed: {
-    isAuthenticated() {
-      return isAuthenticated();
+    isAdminAuthenticated() {
+      return isAdminAuthenticated();
     },
-    user() {
-      return getUser();
+    admin() {
+      return getAdmin();
     }
   },
   created() {
-    if (this.isAuthenticated) {
-      this.fetchOrders(this.user.id);
+    if (this.isAdminAuthenticated) {
+      this.fetchOrders();
     }
   },
   methods: {
-    fetchOrders(userId) {
-      axios.get(`http://localhost/Book-Store/database/getAllOrders.php?user_id`)
+    logoutAdmin() {
+      logoutAdmin();
+      this.$router.push('/log-admin');
+    },
+    fetchOrders() {
+      axios.get(`http://localhost/Book-Store/database/getAllOrders.php`)
         .then(response => {
           if (response.data && response.data.orders) {
             this.orders = response.data.orders;
@@ -84,12 +98,13 @@ export default {
 </script>
 <style scoped>
 .profile-container {
-  margin-bottom: 200px;
+  margin-top:100px;
+  text-align:center;
 }
 
 .start {
   color: #666;
-  font-size: 22px;
+  font-size: 26px;
 }
 
 .login-button {
@@ -108,30 +123,8 @@ export default {
   background-color: #cb4d86;
 }
 
-.user-info-section {
-  text-align: left;
-}
-
-.user-info-table {
-  width: 100%;
-  margin-top: 20px;
-  font-size: 22px;
-}
-
-.user-info-table th,
-.user-info-table td {
-  border: 1px solid #ddd;
-  padding: 10px;
-}
-
-.user-info-table th {
-  background-color: #f2f2f2;
-  color: #333;
-  font-weight: bold;
-}
-
 .order-info {
-  margin-top: 100px;
+  margin-top: 50px;
 }
 
 .order-item {

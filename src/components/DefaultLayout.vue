@@ -23,7 +23,7 @@
         <router-link to="/about">Про нас</router-link>
         <router-link to="/cart" class="cart_opt">Кошик</router-link>
         <router-link to="/myprofile" class="myprofile_opt">Мій кабінет</router-link>
-        <button v-if="isAuthenticated" @click="logout" class="logout">Вийти</button>
+        <button v-if="isUserAuthenticated" @click="logoutUser" class="logout">Вийти</button>
       </nav>
     </header>
     <main>
@@ -36,23 +36,23 @@
 </template>
 
 <script>
-import { isAuthenticated, logout } from '@/auth';
+import { isUserAuthenticated, logoutUser } from '@/auth';
 
 export default {
   name: 'DefaultLayout',
   data() {
     return {
-      isAuthenticated: false
+      isUserAuthenticated: false
     };
   },
   watch: {
     $route(to, from) {
-      this.isAuthenticated = isAuthenticated();
+      this.isUserAuthenticated = isUserAuthenticated();
     }
   },
   methods: {
-    logout() {
-      logout();
+    logoutUser() {
+      logoutUser();
       this.$router.push('/');
     }
   }

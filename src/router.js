@@ -44,9 +44,9 @@ export default createRouter({
         { path: '/confirmation', component: OrderConfirmation},
         { path: '/order-details' , name:'OrderDetails', component: OrderDetails, props:true},
 
-        { path: '/users-orders', name:'UsersOrders', component: UsersOrders, meta: {layout: 'full-page'}},
-        { path: '/admin',name:'LogAdmin', component: LogAdmin,meta: {layout: 'full-page'}},
-        { path: '/manage-order', name:'ManageOrder', component: ManageOrder, meta:{layout:'full-page'}},
+        { path: '/admin', name:'UsersOrders', component: UsersOrders, meta: {layout: 'full-page'}},
+        { path: '/log-admin',name:'LogAdmin', component: LogAdmin,meta: {layout: 'full-page'}},
+        { path: '/manage-order', name:'ManageOrder', component: ManageOrder, meta:{layout:'full-page'},props:true},
         { path: '/reg-admin', name:'RegAdmin', component: RegAdmin, meta:{layout:'full-page'}}
     ]
 })

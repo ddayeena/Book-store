@@ -22,7 +22,7 @@
 
 <script>
 import axios from 'axios';
-import { isAuthenticated, getUser } from '@/auth';
+import { isUserAuthenticated, getUser } from '@/auth';
 
 export default {
   props: ['id'],
@@ -32,8 +32,8 @@ export default {
     };
   },
   computed: {
-    isAuthenticated() {
-      return isAuthenticated();
+    isUserAuthenticated() {
+      return isUserAuthenticated();
     },
     user() {
       return getUser(); 
@@ -53,7 +53,7 @@ export default {
         });
     },
     buyBook() {
-      if (!this.isAuthenticated) {
+      if (!this.isUserAuthenticated) {
         alert("Будь ласка, увійдіть у свій акаунт, щоб додати книгу до кошика.");
         return;
       }

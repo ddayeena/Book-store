@@ -18,7 +18,7 @@
 
 <script>
 import axios from 'axios';
-import { setToken, setUser } from '@/auth';
+import { setAdminToken, setAdmin } from '@/auth';
 
 export default {
     data() {
@@ -47,9 +47,9 @@ export default {
             })
                 .then(response => {
                     if (response.data.message === "Користувач знайдений") {
-                        setToken(response.data.token);
-                        setUser(response.data.user); 
-                        this.$router.push('/users-orders');
+                        setAdminToken(response.data.token);
+                        setAdmin(response.data.user); 
+                        this.$router.push('/admin');
                     } else {
                         this.error = response.data.message;
                     }
@@ -78,6 +78,7 @@ input[type="email"] {
 }
 .login{
     width:800px;
+    text-align: center;
     margin:0 auto;
 }
 .start{

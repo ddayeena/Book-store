@@ -1,6 +1,6 @@
 <template>
   <div class="profile-container">
-    <div v-if="isAuthenticated">
+    <div v-if="isUserAuthenticated">
       <div class="profile-header">
         <h1>КАБІНЕТ</h1>
         <p class="start">Вітаємо, {{ user.name }}! Ласкаво просимо до вашого особистого кабінету!</p>
@@ -70,7 +70,7 @@
 
 <script>
 import axios from 'axios';
-import { isAuthenticated, getUser } from '@/auth';
+import { isUserAuthenticated, getUser } from '@/auth';
 
 export default {
   data() {
@@ -80,15 +80,15 @@ export default {
     };
   },
   computed: {
-    isAuthenticated() {
-      return isAuthenticated();
+    isUserAuthenticated() {
+      return isUserAuthenticated();
     },
     user() {
       return getUser();
     }
   },
   created() {
-    if (this.isAuthenticated) {
+    if (this.isUserAuthenticated) {
       this.fetchOrders(this.user.id);
     }
   },

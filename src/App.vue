@@ -7,8 +7,8 @@
 </template>
 
 <script>
-import DefaultLayout from './components/DefaultLayout.vue'; // ваш поточний макет
-import FullPage from './components/FullPage.vue'; // новий макет
+import DefaultLayout from './components/DefaultLayout.vue'; 
+import FullPage from './components/FullPage.vue'; 
 
 export default {
   name: 'App',

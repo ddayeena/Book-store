@@ -2,7 +2,7 @@
   <div class="cart">
     <h1>КОШИК</h1>
     
-    <div v-if="isAuthenticated && user">
+    <div v-if="isUserAuthenticated && user">
       <p class="start">{{ cartMessage }}</p>
 
       <div v-if="cart_items.length > 0">
@@ -51,7 +51,7 @@
 
 <script>
 import axios from 'axios';
-import { isAuthenticated, getUser } from '@/auth'; 
+import { isUserAuthenticated, getUser } from '@/auth'; 
 
 export default {
   data() {
@@ -62,15 +62,15 @@ export default {
     };
   },
   computed: {
-    isAuthenticated() {
-      return isAuthenticated();
+    isUserAuthenticated() {
+      return isUserAuthenticated();
     },
     user() {
       return getUser(); 
     }
   },
   mounted() {
-    if (this.isAuthenticated && this.user) {
+    if (this.isUserAuthenticated && this.user) {
       this.checkCart(this.user.id);
     }
   },

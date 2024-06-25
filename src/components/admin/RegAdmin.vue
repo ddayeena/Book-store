@@ -8,7 +8,7 @@
             <input type="email" v-model="userEmail" name="userEmail" placeholder="Email" required>
             <div class="acc">
                 <p class="quest">Вже є особиста сторінка?</p>
-                <router-link to="/admin"><button class="log_but">Натисніть тут</button></router-link>
+                <router-link to="/log-admin"><button class="log_but">Натисніть тут</button></router-link>
             </div>
             <p class="error">{{ error }}</p>
             <button type="submit" class="reg_but">Зареєструватися</button>
@@ -18,7 +18,7 @@
 
 <script>
 import axios from 'axios';  
-import { setToken, setUser } from '@/auth';
+import { setAdminToken, setAdmin } from '@/auth';
 
 export default {
     data() {
@@ -62,9 +62,9 @@ export default {
             })
                 .then(response => {
                     if (response.data.message === "Користувач зареєстрований успішно") {
-                        setToken(response.data.token); 
-                        setUser(response.data.user); 
-                        this.$router.push('/myprofile');
+                        setAdminToken(response.data.token); 
+                        setAdmin(response.data.user); 
+                        this.$router.push('/admin');
                     } else {
                         this.error = response.data.message;
                     }
@@ -93,6 +93,7 @@ input[type="email"] {
   font-size:22px;
 }
 .register{
+    text-align: center;
     width:800px;
     margin:0 auto;
 }
