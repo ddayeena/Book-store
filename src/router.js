@@ -25,6 +25,7 @@ import ManageOrder from './components/admin/ManageOrder.vue'
 import ManageBooks from './components/admin/ManageBooks.vue'
 import AddBook from './components/admin/AddBook.vue'
 import AdminProfile from './components/admin/AdminProfile.vue'
+import ManageUsers from './components/admin/ManageUsers.vue'
 
 export default createRouter({
     history: createWebHashHistory(),
@@ -53,6 +54,7 @@ export default createRouter({
         { path: '/manage-order', name:'ManageOrder', component: ManageOrder, meta:{layout:'full-page'},props:true},
         { path: '/manage-books', name: 'ManageBooks',component: ManageBooks, meta:{layout:'full-page'}},
         { path: '/add-book', name: 'AddBook', component:AddBook, meta:{layout:'full-page'}},
-        { path: '/admin', name:'AdminProfile',component:AdminProfile,meta:{layout:'full-page'}}
+        { path: '/admin', name:'AdminProfile',component:AdminProfile,meta:{layout:'full-page'}},
+        { path: '/manage-users', name:'ManageUsers',component:ManageUsers,meta:{layout:'full-page'}}
     ]
 })

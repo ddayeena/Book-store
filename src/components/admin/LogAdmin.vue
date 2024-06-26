@@ -77,10 +77,9 @@ input[type="email"] {
   font-size:22px;
 }
 .login{
-    width:800px;
-    text-align: center;
-    margin:0 auto;
-    
+  width:800px;
+  text-align: center;
+  margin:0 auto; 
   margin-top:50px;
   border: 1px solid #ddd;
   border-radius: 8px;
@@ -90,8 +89,8 @@ input[type="email"] {
 
 }
 .start{
-    color: #666;
-    font-size: 22px;
+  color: #666;
+  font-size: 22px;
 }
 .error {
   color: red;

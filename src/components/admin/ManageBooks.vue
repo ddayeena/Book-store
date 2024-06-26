@@ -2,15 +2,29 @@
 <div class="catalog-container">
   <div v-if="isAdminAuthenticated">
 
-    <div class="catalog">
+    <div  v-if="admin.role === 'admin'" class="catalog">
       <h1>КНИГИ</h1>
       <div class="add-book-container">
         <button class="add-book-btn" @click="addBook">Додати нову книгу</button>
       </div>
+
+      <div class="filter-container">
+        <label for="genre-filter">Фільтр за жанром:</label>
+        <select id="genre-filter" v-model="selectedGenre">
+          <option value="">Усі жанри</option>
+          <option value="Детективи">Детективи</option>
+          <option value="Трилери та жахи">Трилери та жахи</option>
+          <option value="Фентезі">Фентезі</option>
+          <option value="Романтична проза">Романтична проза</option>
+          <option value="Комікси">Комікси та манга</option>
+        </select>
+      </div>
+      
       <div class="search-container">
         <i class="fa fa-search search-icon"></i>
         <input type="text" v-model="searchQuery" placeholder="Пошук книги" class="search-bar">
       </div>
+
 
       <div v-if="filteredBooks.length === 0" class="search-text">Не знайдено книг за запитом «{{searchQuery}}»</div>
 
@@ -36,6 +50,14 @@
 
       </div>
     </div>
+
+      <div v-else>
+        <div class="no-access">
+          <h3>КНИГИ</h3>
+          <p>⛔</p>
+          <p> У вас немає доступу до цієї сторінки. Будь ласка, зв'яжіться з адміном для надання доступу.</p>
+        </div>
+      </div>
   </div>
   
   <div v-else class="login">
@@ -95,16 +117,16 @@
 </div>
 </template>
 
-
 <script>
 import axios from 'axios';
-import { isAdminAuthenticated } from '@/auth.js';
+import { isAdminAuthenticated,getAdmin } from '@/auth.js';
 
 export default {
   data() {
     return {
       books: [],
       searchQuery: '',
+      selectedGenre: '',
       showEditModal: false,
       editedBook: {}
     };
@@ -126,9 +148,9 @@ export default {
       this.$router.push('/add-book');
     },
     confirmRemove(bookId) {
-      if (confirm("Ви впевнені, що бажаєте видалити книгу?")) {
+      if (confirm("Ви впевнені, що хочете видалити цю книгу?")) {
         this.removeBook(bookId);
-      }    
+      }
     },
     removeBook(bookId) {
       axios.post('http://localhost/Book-Store/database/removeBook.php', { id: bookId })
@@ -171,66 +193,42 @@ export default {
     isAdminAuthenticated() {
       return isAdminAuthenticated();
     },
+    admin(){
+      return getAdmin();
+    },
     filteredBooks() {
-      if (!this.searchQuery) {
-        return this.books;
+      let filtered = this.books;
+
+      if (this.selectedGenre) {
+        filtered = filtered.filter(book => book.genre_name === this.selectedGenre);
       }
-      const searchQueryLower = this.searchQuery.toLowerCase();
-      return this.books.filter(book => {
-        const nameMatches = book.name.toLowerCase().includes(searchQueryLower);
-        const authorMatches = book.author.toLowerCase().includes(searchQueryLower);
-        return nameMatches || authorMatches;
-      });
+
+      if (this.searchQuery) {
+        const searchQueryLower = this.searchQuery.toLowerCase();
+        filtered = filtered.filter(book => {
+          const nameMatches = book.name.toLowerCase().includes(searchQueryLower);
+          const authorMatches = book.author.toLowerCase().includes(searchQueryLower);
+          return nameMatches || authorMatches;
+        });
+      }
+
+      return filtered;
     }
   }
 };
 </script>
 
-
 <style scoped>
+@import url('@/assets/css/admin_loginstyle.css');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
 .catalog-container {
   text-align: center;
-  margin-top: 50px;
 }
 .catalog {
   width: 100%;
   margin-bottom: 100px;
   border-radius: 8px;
 }
-
-.start {
-  color: #666;
-  font-size: 26px;
-  text-align: center;
-  margin-top: 20px;
-}
-
-.login-button {
-  padding: 10px 20px;
-  background-color: #ec70a8;
-  color: #fff;
-  border-radius: 5px;
-  border: none;
-  cursor: pointer;
-  transition: background-color 0.5s;
-  font-size: 22px;
-  text-decoration: none;
-}
-
-.login-button:hover {
-  background-color: #cb4d86;
-}
-
-.login {
-  margin-top: 200px;
-  border: 1px solid #ddd;
-  border-radius: 8px;
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  padding: 50px;
-  display: inline-block;
-}
-
 .book-item {
   display: flex;
   align-items: center;
@@ -258,7 +256,7 @@ export default {
 .book-info {
   font-size: 18px;
   text-align: left;
-  width:75%;
+  width:100%;
 }
 
 .book-name {
@@ -319,7 +317,7 @@ h1 {
 .add-book-container {
   text-align: left;
 }
-.add-book-btn, .remove-btn {
+.add-book-btn{
   font-size: 18px;
   padding: 10px;
   color: #333;
@@ -341,7 +339,7 @@ h1 {
   border-radius: 5px;
   cursor: pointer;
   width:100%;
-  margin-left:10px;
+  margin-bottom: 30px;
   text-decoration: underline;
 }
 
@@ -427,6 +425,4 @@ h1 {
   background-color: #cb4d86;
 }
 
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
 </style>
-

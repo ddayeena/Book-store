@@ -1,6 +1,7 @@
 <template>
   <div class="full-page">      
     <header>
+      <router-link to="/manage-users" class="nav-link">Користувачі</router-link>
       <router-link to="/manage-books" class="nav-link">Книги</router-link>
       <router-link to="/users-orders" class="nav-link">Замовлення</router-link>
       <router-link to="/admin" class="nav-link">Мій кабінет</router-link>
@@ -63,9 +64,11 @@ header {
   font-size: 20px;
 }
 
-.nav-link:hover {
+.nav-link:hover,
+.router-link-active {
   text-decoration: underline;
 }
+
 
 .logout {
   margin-right: 10px;

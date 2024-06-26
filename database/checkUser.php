@@ -22,8 +22,13 @@ if (isset($data['name']) && isset($data['password']) && isset($data['role']) && 
     $email = $conn->real_escape_string($data['email']);
     $password = $data['password'];
     $role = $data['role'];
-
-    $sql = "SELECT * FROM user WHERE (name='$name' OR email='$email') AND role = '$role';";
+    
+    if($role==='admin'){
+        $sql = "SELECT * FROM user WHERE (name='$name' OR email='$email') AND (role = '$role' OR role = 'registered');";
+    }
+    else{
+        $sql = "SELECT * FROM user WHERE (name='$name' OR email='$email') AND role = '$role';";
+    }
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {

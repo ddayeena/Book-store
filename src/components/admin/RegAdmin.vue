@@ -50,7 +50,7 @@ export default {
                 name: this.userName,
                 password: this.userPass,
                 email: this.userEmail,
-                role: 'admin'
+                role: 'registered'
             };
 
             const url = 'http://localhost/Book-Store/database/regUser.php'; 
@@ -93,9 +93,15 @@ input[type="email"] {
   font-size:22px;
 }
 .register{
-    text-align: center;
-    width:800px;
-    margin:0 auto;
+  text-align: center;
+  width:800px;
+  margin:0 auto;
+  margin-top:50px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding:50px;
 }
 .start{
     color: #666;

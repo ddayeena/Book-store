@@ -1,55 +1,79 @@
 <template>
-  <div class="add-book-form">
-    <h2>ДОДАТИ КНИГУ</h2>
-    <form @submit.prevent="addBook">
-      <div class="form-group">
-        <label for="name">Ім'я книги:</label>
-        <input type="text" id="name" v-model="book.name" required>
+  <div class="add-book-container">
+    <div v-if="isAdminAuthenticated">
+      <div v-if="admin.role === 'admin'">
+      <router-link to="/manage-books"><p class="back">НАЗАД</p></router-link>
+      <div class="add-book-form">
+        <h2>ДОДАТИ КНИГУ</h2>
+        <form @submit.prevent="addBook">
+          <div class="form-group">
+            <label for="name">Ім'я книги:</label>
+            <input type="text" id="name" v-model="book.name" required>
+          </div>
+
+          <div class="form-group">
+            <label for="author">Автор:</label>
+            <input type="text" id="author" v-model="book.author" required>
+          </div>
+
+          <div class="form-group">
+            <label for="description">Опис:</label>
+            <textarea id="description" v-model="book.description" rows="5" required></textarea>
+          </div>
+
+          <div class="form-group">
+            <label for="price">Ціна:</label>
+            <input type="number" id="price" min="0" v-model.number="book.price" required>
+          </div>
+
+          <div class="form-group">
+            <label for="genre">Жанр:</label>
+            <select id="genre" v-model="book.genre" required>
+              <option value="Детективи">Детективи</option>
+              <option value="Трилери та жахи">Трилери та жахи</option>
+              <option value="Романтична проза">Романтична проза</option>
+              <option value="Фентезі">Фентезі</option>
+              <option value="Комікси">Комікси</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="isNew">Новинка:</label>
+            <input type="checkbox" id="isNew" v-model="book.isNew">
+          </div>
+
+          <div class="form-group">
+            <label for="image">Картинка:</label>
+            <input type="file" id="image" ref="fileInput" @change="handleFileUpload" accept="image/*" required>
+          </div>
+
+          <button type="submit">Додати книгу</button>
+        </form>
+      </div>
       </div>
 
-      <div class="form-group">
-        <label for="author">Автор:</label>
-        <input type="text" id="author" v-model="book.author" required>
+      <div v-else>
+        <div class="no-access">
+          <h3>ДОДАТИ КНИГУ</h3>
+          <p>⛔</p>
+          <p> У вас немає доступу до цієї сторінки. Будь ласка, зв'яжіться з адміном для надання доступу.</p>
+        </div>
       </div>
 
-      <div class="form-group">
-        <label for="description">Опис:</label>
-        <textarea id="description" v-model="book.description" rows="5" required></textarea>
-      </div>
+    </div>
 
-      <div class="form-group">
-        <label for="price">Ціна:</label>
-        <input type="number" id="price" min="0" v-model.number="book.price" required>
-      </div>
+    <div v-else class="login">
+      <h1>ДОДАТИ КНИГУ</h1>
+      <p class="start">Ви не авторизовані. Будь ласка, увійдіть у свій кабінет.</p>
+      <router-link to="/log-admin" class="login-button">Увійти</router-link>
+    </div>
 
-      <div class="form-group">
-        <label for="genre">Жанр:</label>
-        <select id="genre" v-model="book.genre" required>
-          <option value="Детективи">Детективи</option>
-          <option value="Трилери та жахи">Трилери та жахи</option>
-          <option value="Романтична проза">Романтична проза</option>
-          <option value="Фентезі">Фентезі</option>
-          <option value="Комікси">Комікси</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label for="isNew">Новинка:</label>
-        <input type="checkbox" id="isNew" v-model="book.isNew">
-      </div>
-
-      <div class="form-group">
-        <label for="image">Картинка:</label>
-        <input type="file" id="image" ref="fileInput" @change="handleFileUpload" accept="image/*" required>
-      </div>
-
-      <button type="submit">Додати книгу</button>
-    </form>
   </div>
 </template>
 
 <script>
 import axios from 'axios';
+import {isAdminAuthenticated,getAdmin} from '@/auth.js';
 
 export default {
   data() {
@@ -64,6 +88,14 @@ export default {
         img_src: ''
       }
     };
+  },
+  computed: {
+    isAdminAuthenticated() {
+      return isAdminAuthenticated();
+    },
+        admin(){
+      return getAdmin();
+    },
   },
   methods: {
     addBook() {
@@ -100,6 +132,20 @@ export default {
 </script>
 
 <style scoped>
+@import url('@/assets/css/admin_loginstyle.css');
+
+.back{
+  font-size:22px;
+  color:#333;
+  font-weight:bold;
+  border-right: 1px solid #333;
+  border-left: 1px solid #333;
+  display:inline-block; 
+  padding:10px;
+}
+.back:hover{
+  color:#666;
+}
 .add-book-form {
   max-width: 600px;
   margin: 0 auto;
@@ -107,6 +153,9 @@ export default {
   background-color: #f2f2f2;
   border-radius: 8px;
   box-shadow: 2px 4px 8px rgba(0, 0, 0, 0.1);
+}
+.add-book-container{
+  text-align: center;
 }
 
 h2 {
@@ -158,4 +207,5 @@ button {
 button:hover {
   background-color: #cb4d86;
 }
+
 </style>

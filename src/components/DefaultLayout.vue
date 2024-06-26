@@ -116,6 +116,11 @@ nav a:hover {
   color: #fff;
   background-color: #ec70a8;
 }
+.router-link-active{
+  color: #fff;
+  background-color: #ec70a8;
+  text-decoration: underline;
+}
 
 .dropdown {
   position: relative;
@@ -161,7 +166,7 @@ nav a:hover {
   text-decoration:underline;
 }
 .cart_opt{
-  background-color:#ec70a8;
+  background-color:#999;
   color:#fff;
 }
 .cart_opt:hover{

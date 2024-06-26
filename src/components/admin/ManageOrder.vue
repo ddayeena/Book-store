@@ -1,79 +1,99 @@
 <template>
-  <div class="order-details-container">
+<div class="orders">
+  <div v-if="isAdminAuthenticated">
+    <div  v-if="admin.role === 'admin'" class="order-details-container">
     
-     <router-link to="/users-orders"><p class="back">НАЗАД</p></router-link>
-    <div class="order-details">
-      <h2>Деталі замовлення</h2>
-      <table>
-        <tr>
-          <th>Поле</th>
-          <th>Значення</th>
-        </tr>
-        <tr>
-          <td>ID користувача:</td>
-          <td>{{ user_id }}</td>
-        </tr>
-        <tr>
-          <td>Ім'я користувача:</td>
-          <td>{{ order_details.user_name }}</td>
-        </tr>
-        <tr>
-          <td>Статус:</td>
-          <td>{{ order_details.status }}</td>
-        </tr>
-        <tr>
-          <td>Дата замовлення:</td>
-          <td>{{ order_details.order_date }}</td>
-        </tr>
-        <tr>
-          <td>Спосіб доставки:</td>
-          <td>{{ order_details.type }}</td>
-        </tr>
-        <tr>
-          <td>Місто:</td>
-          <td>{{ order_details.town }}</td>
-        </tr>
-        <tr>
-          <td>Адреса:</td>
-          <td>вул. {{ order_details.street }} {{ order_details.street_number }}</td>
-        </tr>
-        <tr>
-          <td>Спосіб оплати:</td>
-          <td>{{ order_details.payment_method }}</td>
-        </tr>
-        <tr class="total-price">
-          <td>Всього до сплати:</td>
-          <td>{{ order_details.total_price }} грн</td>
-        </tr>
-      </table>
-    </div>
+      <router-link to="/users-orders"><p class="back">НАЗАД</p></router-link>
+      <div class="order-details">
+        <h2>Деталі замовлення</h2>
+        <table>
+          <tr>
+            <th>Поле</th>
+            <th>Значення</th>
+          </tr>
+          <tr>
+            <td>ID користувача:</td>
+            <td>{{ user_id }}</td>
+          </tr>
+          <tr>
+            <td>Ім'я користувача:</td>
+            <td>{{ order_details.user_name }}</td>
+          </tr>
+          <tr>
+            <td>Статус:</td>
+            <td>{{ order_details.status }}</td>
+          </tr>
+          <tr>
+            <td>Дата замовлення:</td>
+            <td>{{ order_details.order_date }}</td>
+          </tr>
+          <tr>
+            <td>Спосіб доставки:</td>
+            <td>{{ order_details.type }}</td>
+          </tr>
+          <tr>
+            <td>Місто:</td>
+            <td>{{ order_details.town }}</td>
+          </tr>
+          <tr>
+            <td>Адреса:</td>
+            <td>вул. {{ order_details.street }} {{ order_details.street_number }}</td>
+          </tr>
+          <tr>
+            <td>Спосіб оплати:</td>
+            <td>{{ order_details.payment_method }}</td>
+          </tr>
+          <tr class="total-price">
+            <td>Всього до сплати:</td>
+            <td>{{ order_details.total_price }} грн</td>
+          </tr>
+        </table>
+      </div>
 
-    <div v-for="(order, index) in order_items" :key="order.book_id" class="order-item">
+      <div v-for="(order, index) in order_items" :key="order.book_id" class="order-item">
 
-      <p class="number">{{ index + 1 }}</p>
-      <img :src="order.img_src" alt="Book Cover" class="book-cover">
+        <p class="number">{{ index + 1 }}</p>
+        <img :src="order.img_src" alt="Book Cover" class="book-cover">
 
-      <div class="order-info">
-        <p class="book-name">{{ order.book_name }}</p>
-        <p class="book-author">{{ order.book_author }}</p>
-        <p>{{ order.book_price }} грн × {{ order.quantity }} шт. = <b>{{ order.book_price * order.quantity }} грн</b></p>
+        <div class="order-info">
+          <p class="book-name">{{ order.book_name }}</p>
+          <p class="book-author">{{ order.book_author }}</p>
+          <p>{{ order.book_price }} грн × {{ order.quantity }} шт. = <b>{{ order.book_price * order.quantity }} грн</b></p>
+        </div>
+
+      </div>
+
+      <div v-if="order_details.status==='В процесі'" class="confirm-order">
+        <button class="confrim-order-btn" @click="sendOrder">Надіслати замовлення</button>
+      </div>
+
+      <div v-if="order_details.status ==='Доставлено'" class="confirm-order">
+          <button class="finish-order-btn">Замовлення доставлене успішно</button>
       </div>
 
     </div>
 
-    <div v-if="order_details.status==='В процесі'" class="confirm-order">
-      <button class="confrim-order-btn" @click="sendOrder">Надіслати замовлення</button>
-    </div>
-
-    <div v-if="order_details.status ==='Доставлено'" class="confirm-order">
-        <button class="finish-order-btn">Замовлення доставлене успішно</button>
+    <div v-else>
+      <div class="no-access">
+        <h3>НАДІСЛАТИ ЗАМОВЛЕННЯ</h3>
+        <p>⛔</p>
+        <p> У вас немає доступу до цієї сторінки. Будь ласка, зв'яжіться з адміном для надання доступу.</p>
+      </div>
     </div>
 
   </div>
+
+  <div v-else class="login">
+    <h1>ДЕТАЛІ ПРО ЗАМОВЛЕННЯ</h1>
+    <p class="start">Ви не авторизовані. Будь ласка, увійдіть у свій кабінет.</p>
+    <router-link to="/log-admin" class="login-button">Увійти</router-link>
+  </div>
+</div>
 </template>
 
 <script>
 import axios from 'axios';
+import {isAdminAuthenticated,getAdmin} from '@/auth.js';
 
 export default {
   props: {
@@ -94,6 +114,14 @@ export default {
   },
   created() {
     this.getOrder();
+  },
+  computed: {
+    isAdminAuthenticated() {
+      return isAdminAuthenticated();
+    },
+    admin() {
+      return getAdmin();
+    }
   },
   methods: {
     getOrder() {
@@ -132,11 +160,13 @@ export default {
 </script>
 
 <style scoped>
+@import url('@/assets/css/admin_loginstyle.css');
 .back{
   font-size:22px;
   color:#333;
   font-weight:bold;
   border-right: 1px solid #333;
+  border-left: 1px solid #333;
   display:inline-block; 
   padding:10px;
 }
@@ -171,6 +201,10 @@ export default {
   background-color: #f2f2f2;
   color: #333;
   font-weight: bold;
+}
+
+.orders{
+  text-align:center;
 }
 
 .number {
