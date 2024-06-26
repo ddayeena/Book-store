@@ -83,7 +83,7 @@ export default {
       })
       .then(response => {
         alert(response.data.message);
-        // Очистити форму або зробити інші дії після успішного додавання
+        this.$router.push('/manage-books');
       })
       .catch(error => {
         console.error("There was an error!", error);

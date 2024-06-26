@@ -14,7 +14,7 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$sql = "SELECT book.id, book.name, book.author, book.description, book.price, book.img_src,genre.name AS genre_name FROM book
+$sql = "SELECT book.id, book.name, book.author, book.description, book.price, book.img_src, book.is_new, genre.name AS genre_name FROM book
 JOIN genre ON book.genre_id = genre.id";
 $result = $conn->query($sql);
 

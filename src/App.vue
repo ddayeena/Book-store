@@ -8,7 +8,7 @@
 
 <script>
 import DefaultLayout from './components/DefaultLayout.vue'; 
-import FullPage from './components/FullPage.vue'; 
+import FullPage from './components/admin/FullPage.vue'; 
 
 export default {
   name: 'App',

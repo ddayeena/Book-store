@@ -1,9 +1,10 @@
 <template>
   <div class="full-page">      
-    <header v-if="isAdminAuthenticated" class="header">
+    <header>
       <router-link to="/manage-books" class="nav-link">Книги</router-link>
-      <router-link to="/admin" class="nav-link">Замовлення</router-link>
-      <button @click="logoutAdmin" class="logout">Вийти</button>
+      <router-link to="/users-orders" class="nav-link">Замовлення</router-link>
+      <router-link to="/admin" class="nav-link">Мій кабінет</router-link>
+      <button @click="logoutAdmin" class="logout" v-if="isAdminAuthenticated">Вийти</button>
     </header>
 
     <router-view></router-view>
@@ -47,7 +48,7 @@ export default {
   height: 100%;
 }
 
-.header {
+header {
   background-color: #999;
   height: 100px;
   display: flex;

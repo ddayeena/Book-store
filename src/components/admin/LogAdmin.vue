@@ -80,6 +80,14 @@ input[type="email"] {
     width:800px;
     text-align: center;
     margin:0 auto;
+    
+  margin-top:50px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding:50px;
+
 }
 .start{
     color: #666;

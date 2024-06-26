@@ -1,7 +1,7 @@
 <template>
   <div class="order-details-container">
     
-     <router-link to="/admin"><p class="back">НАЗАД</p></router-link>
+     <router-link to="/users-orders"><p class="back">НАЗАД</p></router-link>
     <div class="order-details">
       <h2>Деталі замовлення</h2>
       <table>

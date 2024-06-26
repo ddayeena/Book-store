@@ -79,12 +79,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $genre_result = $genre_stmt->get_result();
 
     if ($genre_result->num_rows > 0) {
-        //отримуємо genre_id
         $genre_row = $genre_result->fetch_assoc();
         $genre_id = $genre_row['id'];
     } 
 
-    //вставка книги в таблицю book з genre_id
+    //вставка книги в таблицю book 
     $sql = "INSERT INTO book(name, author, description, price, genre_id, img_src, is_new) VALUES (?, ?, ?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($sql);
     $stmt->bind_param("sssdisi", $name, $author, $description, $price, $genre_id, $img_src, $isNew);

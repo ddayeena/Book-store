@@ -1,9 +1,7 @@
 <template>
-  <div class="profile-container">
+  <div class="orders-container">
     <div v-if="isAdminAuthenticated">
-      <div class="welcome">
-        <p class="start">Вітаємо, {{ admin.name }}!</p>
-      </div>
+
 
         <div class="order-info">
         <h1>ЗАМОВЛЕННЯ</h1>
@@ -37,13 +35,11 @@
             </div>
             </div>
             <div v-if="orders.length==0" class="start">У вас немає замовлень</div>
-       </div>
+      </div>
+    </div>
 
-
-  </div>
-
-    <div v-else>
-      <h1>АДМІН</h1>
+    <div v-else class="login">
+      <h1>ЗАМОВЛЕННЯ</h1>
       <p class="start">Ви не авторизовані. Будь ласка, увійдіть у свій кабінет.</p>
       <router-link to="/log-admin" class="login-button">Увійти</router-link>
     </div>
@@ -52,7 +48,7 @@
 
 <script>
 import axios from 'axios';
-import { isAdminAuthenticated, getAdmin, logoutAdmin } from '@/auth';
+import { isAdminAuthenticated } from '@/auth';
 
 export default {
   data() {
@@ -75,16 +71,12 @@ export default {
     }
   },
   methods: {
-    logoutAdmin() {
-      logoutAdmin();
-      this.$router.push('/log-admin');
-    },
     fetchOrders() {
       axios.get(`http://localhost/Book-Store/database/getAllOrders.php`)
         .then(response => {
           if (response.data && response.data.orders) {
             this.orders = response.data.orders;
-            this.cartMessage = this.orders.length === 0 ? 'У вас немає замовлень' : `Кількість замовлень: ${this.orders.length}`;
+            this.cartMessage = this.orders.length === 0 ? 'Замовлень немає' : `Кількість замовлень: ${this.orders.length}`;
           } else {
             this.cartMessage = 'У вас немає замовлень';
           }
@@ -100,13 +92,14 @@ export default {
 <style scoped>
 
 
-.profile-container {
+.orders-container {
   text-align: center;
   margin-bottom:100px;
+  color:#333;
 }
 
 .start {
-  color: #666;
+  color: #333;
   font-size: 26px;
   text-align: center;
   margin-top: 20px; 
@@ -128,8 +121,14 @@ export default {
   background-color: #cb4d86;
 }
 
-.order-info {
-  margin-top: 50px;
+.login{
+  margin-top:200px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding:50px;
+  display:inline-block;
 }
 
 .order-item {
@@ -138,6 +137,8 @@ export default {
   border: 1px solid #ddd;
   box-shadow: 0px 4px 8px 0px rgba(0, 0, 0, 0.2);
   transition: background-color 0.5s;
+  border-radius:8px;
+
 }
 
 .order-item:hover {
