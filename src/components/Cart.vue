@@ -2,7 +2,7 @@
   <div class="cart">
     <h1>КОШИК</h1>
     
-    <div v-if="isAuthenticated && user">
+    <div v-if="isUserAuthenticated && user">
       <p class="start">{{ cartMessage }}</p>
 
       <div v-if="cart_items.length > 0">
@@ -51,7 +51,7 @@
 
 <script>
 import axios from 'axios';
-import { isAuthenticated, getUser } from '@/auth'; 
+import { isUserAuthenticated, getUser } from '@/auth'; 
 
 export default {
   data() {
@@ -62,21 +62,21 @@ export default {
     };
   },
   computed: {
-    isAuthenticated() {
-      return isAuthenticated();
+    isUserAuthenticated() {
+      return isUserAuthenticated();
     },
     user() {
       return getUser(); 
     }
   },
   mounted() {
-    if (this.isAuthenticated && this.user) {
+    if (this.isUserAuthenticated && this.user) {
       this.checkCart(this.user.id);
     }
   },
   methods: {
     checkCart(userId) {
-      axios.get(`http://localhost/Book-Store/backend/getCart.php?user_id=${userId}`)
+      axios.get(`http://localhost/Book-Store/database/getCart.php?user_id=${userId}`)
         .then(response => {
           if (response.data && response.data.cart_items) {
             this.cart_items = response.data.cart_items;
@@ -96,7 +96,7 @@ export default {
         });                                                                         
     },
     removeFromCart(cartId) {
-      axios.post(`http://localhost/Book-Store/backend/removeFromCart.php?cart_details_id=${cartId}`)
+      axios.post(`http://localhost/Book-Store/database/removeFromCart.php?cart_details_id=${cartId}`)
         .then(response => {
         const indexToRemove = this.cart_items.findIndex(item => item.cart_details_id === cartId);
         if (indexToRemove !== -1) {
@@ -124,7 +124,7 @@ export default {
         });
     },
     addToCart(cartItem) {
-      axios.post('http://localhost/Book-Store/backend/addToCart.php', {
+      axios.post('http://localhost/Book-Store/database/addToCart.php', {
         user_id: this.user.id,
         book_id: cartItem.book_id,
         price: cartItem.price

@@ -1,6 +1,6 @@
 <template>
   <div class="profile-container">
-    <div v-if="isAuthenticated">
+    <div v-if="isUserAuthenticated">
       <div class="profile-header">
         <h1>КАБІНЕТ</h1>
         <p class="start">Вітаємо, {{ user.name }}! Ласкаво просимо до вашого особистого кабінету!</p>
@@ -28,33 +28,37 @@
         </table>
       </div>
 
-        <div v-if="orders.length > 0" class="order-info">
-          <h2>Ваші замовлення</h2>
-          <div v-for="(order, index) in orders" :key="order.order_id" class="order-item">
-          <router-link :to="{name:'OrderDetails', params:{order_id: order.order_id}}">
+        <div class="order-info">
+        <h2>Ваші замовлення</h2>
+            <div v-if="orders.length > 0">
+              <div v-for="(order, index) in orders" :key="order.order_id" class="order-item">
+              <router-link :to="{name:'OrderDetails', params:{order_id: order.order_id}}">
 
-            <div class="order-details">
+                <div class="order-details">
 
-              <div class="order-extra-details">
-              <p class="order-number">Замовлення №{{ index+1}}</p>
-                <p class="order-details-text">
-                  Місто: {{ order.town }}<br>
-                  Вулиця: {{ order.street }} {{ order.street_number }}<br>
-                  Доставка на пошту: {{ order.type }}
-                </p>
-                <p class="order-details-text">
-                  Дата замовлення: {{ order.order_date }}<br>
-                  Тип оплати: {{ order.payment_method }}<br>
-                  Сума замовлення: {{order.total_price}}
-                </p>
-                <div class="status-square">{{ order.status }}</div>
-              </div>
+                  <div class="order-extra-details">
+                  <p class="order-number">Замовлення №{{ index+1}}</p>
+                    <p class="order-details-text">
+                      Місто: {{ order.town }}<br>
+                      Вулиця: {{ order.street }} {{ order.street_number }}<br>
+                      Доставка на пошту: {{ order.type }}
+                    </p>
+                    <p class="order-details-text">
+                      Дата замовлення: {{ order.order_date }}<br>
+                      Тип оплати: {{ order.payment_method }}<br>
+                      Сума замовлення: {{order.total_price}}
+                    </p>
+                    <div v-if="order.status==='В процесі'" class="status-square-process">{{order.status}}</div>
+                    <div v-if="order.status==='Доставлено'" class="status-square-done">{{order.status}} </div>
+                  </div>
 
+                </div>
+              </router-link>
             </div>
-          </router-link>
+            </div>
+            <div v-if="orders.length==0" class="start">У вас немає замовлень</div>
+       </div>
 
-          </div>
-        </div>
   </div>
 
     <div v-else>
@@ -67,7 +71,7 @@
 
 <script>
 import axios from 'axios';
-import { isAuthenticated, getUser } from '@/auth';
+import { isUserAuthenticated, getUser } from '@/auth';
 
 export default {
   data() {
@@ -77,21 +81,21 @@ export default {
     };
   },
   computed: {
-    isAuthenticated() {
-      return isAuthenticated();
+    isUserAuthenticated() {
+      return isUserAuthenticated();
     },
     user() {
       return getUser();
     }
   },
   created() {
-    if (this.isAuthenticated) {
+    if (this.isUserAuthenticated) {
       this.fetchOrders(this.user.id);
     }
   },
   methods: {
     fetchOrders(userId) {
-      axios.get(`http://localhost/Book-Store/backend/getOrders.php?user_id=${userId}`)
+      axios.get(`http://localhost/Book-Store/database/getOrders.php?user_id=${userId}`)
         .then(response => {
           if (response.data && response.data.orders) {
             this.orders = response.data.orders;
@@ -197,10 +201,20 @@ a{
   text-align: justify;
 }
 
-.status-square {
+.status-square-process {
   padding: 10px 15px;
   border-radius: 5px;
   background-color: #4CAF50;
+  color: #fff;
+  min-width: 100px;
+  font-weight: bold;
+  justify-content: center;
+}
+
+.status-square-done {
+  padding: 10px 15px;
+  border-radius: 5px;
+  background-color: rgb(50, 50, 150);
   color: #fff;
   min-width: 100px;
   font-weight: bold;

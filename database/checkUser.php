@@ -17,11 +17,18 @@ if ($conn->connect_error) {
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-if (isset($data['name']) && isset($data['password'])) {
+if (isset($data['name']) && isset($data['password']) && isset($data['role']) && isset($data['email'])) {
     $name = $conn->real_escape_string($data['name']);
+    $email = $conn->real_escape_string($data['email']);
     $password = $data['password'];
-
-    $sql = "SELECT * FROM user WHERE name='$name' OR email='$name'";
+    $role = $data['role'];
+    
+    if($role==='admin'){
+        $sql = "SELECT * FROM user WHERE (name='$name' OR email='$email') AND (role = '$role' OR role = 'registered');";
+    }
+    else{
+        $sql = "SELECT * FROM user WHERE (name='$name' OR email='$email') AND role = '$role';";
+    }
     $result = $conn->query($sql);
 
     if ($result->num_rows > 0) {

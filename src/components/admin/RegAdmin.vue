@@ -1,24 +1,24 @@
 <template>
-    <div class="login">
-        <h1>КАБІНЕТ</h1>
-        <p class="start">Введіть дані для авторизації</p>
+    <div class="register">
+        <h1>РЕЄСТРАЦІЯ</h1>
+        <p class="start">Введіть дані для реєстрації</p>
         <form @submit.prevent="sendData">
             <input type="text" v-model="userName" name="userName" placeholder="Логін" required>
             <input type="password" v-model="userPass" name="userPass" placeholder="Пароль" required>
             <input type="email" v-model="userEmail" name="userEmail" placeholder="Email" required>
-            <div class="new_acc">
-                <p class="quest">Ще не створили власну сторінку?</p>
-                <router-link to="/register"><button class="reg_but">Натисніть тут</button></router-link>
+            <div class="acc">
+                <p class="quest">Вже є особиста сторінка?</p>
+                <router-link to="/log-admin"><button class="log_but">Натисніть тут</button></router-link>
             </div>
             <p class="error">{{ error }}</p>
-            <button type="submit" class="log_but">Увійти</button>
+            <button type="submit" class="reg_but">Зареєструватися</button>
         </form>
     </div>
 </template>
 
 <script>
-import axios from 'axios';
-import { setUserToken, setUser } from '@/auth';
+import axios from 'axios';  
+import { setAdminToken, setAdmin } from '@/auth';
 
 export default {
     data() {
@@ -31,14 +31,29 @@ export default {
     },
     methods: {
         sendData() {
+        if (this.userName.length < 3) {
+            this.error= "Логін має бути більше 2 символів";
+            return;
+        }
+
+        if (this.userName.length > 20) {
+            this.error="Логін має бути менше 20 символів";
+            return;
+        }
+
+        if (this.userPass.length < 6) {
+            this.error = "Пароль має бути більше 5 символів";
+            return;
+        }
+
             const userData = {
                 name: this.userName,
                 password: this.userPass,
                 email: this.userEmail,
-                role: 'user'
+                role: 'registered'
             };
 
-            const url = 'http://localhost/Book-Store/database/checkUser.php';
+            const url = 'http://localhost/Book-Store/database/regUser.php'; 
 
             axios.post(url, userData, {
                 headers: {
@@ -46,10 +61,10 @@ export default {
                 }
             })
                 .then(response => {
-                    if (response.data.message === "Користувач знайдений") {
-                        setUserToken(response.data.token);
-                        setUser(response.data.user); 
-                        this.$router.push('/myprofile');
+                    if (response.data.message === "Користувач зареєстрований успішно") {
+                        setAdminToken(response.data.token); 
+                        setAdmin(response.data.user); 
+                        this.$router.push('/admin');
                     } else {
                         this.error = response.data.message;
                     }
@@ -59,10 +74,11 @@ export default {
                     console.error('Помилка:', error);
                 });
         },
+
     }
 };
-</script>
 
+</script>
 
 <style scoped>
 input[type="text"],
@@ -76,9 +92,16 @@ input[type="email"] {
   border-radius: 5px;
   font-size:22px;
 }
-.login{
-    width:800px;
-    margin:0 auto;
+.register{
+  text-align: center;
+  width:800px;
+  margin:0 auto;
+  margin-top:50px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding:50px;
 }
 .start{
     color: #666;
@@ -90,7 +113,7 @@ input[type="email"] {
   font-size:22px;
 }
 
-.log_but {
+.reg_but {
   padding: 10px 20px;
   background-color:#ec70a8;
   color: #fff;
@@ -101,11 +124,11 @@ input[type="email"] {
   font-size:22px;
 }
 
-.log_but:hover {
+.reg_but:hover {
   background-color: #cb4d86;
 }
 
-.new_acc{
+.acc{
     display:flex;
     justify-content: space-between;
 }
@@ -115,7 +138,7 @@ input[type="email"] {
     font-size: 20px;
 }
 
-.reg_but{
+.log_but{
     border-style:none;
     background: none;
     color:rgb(59, 81, 126);
@@ -128,7 +151,7 @@ input[type="email"] {
     margin-top:10px;
 }
 
-.reg_but:hover{
+.log_but:hover{
     color:#fff;
     background:rgb(64, 91, 147);
 }

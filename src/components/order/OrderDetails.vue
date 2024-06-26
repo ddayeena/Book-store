@@ -58,7 +58,7 @@
 
 <script>
 import axios from 'axios';
-import { isAuthenticated, getUser } from '@/auth';
+import { isUserAuthenticated, getUser } from '@/auth';
 
 export default {
   props: ['order_id'],
@@ -69,21 +69,21 @@ export default {
     };
   },
   computed: {
-    isAuthenticated() {
-      return isAuthenticated();
+    isUserAuthenticated() {
+      return isUserAuthenticated();
     },
     user() {
       return getUser(); 
     }
   },
   created() {
-    if (this.isAuthenticated) {
+    if (this.isUserAuthenticated) {
       this.getOrder();
     }
   },
   methods: {
     getOrder() {
-      axios.get('http://localhost/Book-Store/backend/getOrderDetails.php', {
+      axios.get('http://localhost/Book-Store/database/getOrderDetails.php', {
         params: {
           order_id: this.order_id,
           user_id: this.user.id

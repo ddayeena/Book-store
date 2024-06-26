@@ -1,0 +1,59 @@
+.start {
+    color: #666;
+    font-size: 26px;
+    text-align: center;
+    margin-top: 20px; 
+  }
+  
+  .login-button {
+    padding: 10px 20px;
+    background-color: #ec70a8;
+    color: #fff;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.5s;
+    font-size: 22px;
+    text-decoration: none;
+  }
+  
+  .login-button:hover {
+    background-color: #cb4d86;
+  }
+  
+  .login{
+    margin-top:250px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    padding:50px;
+    display:inline-block;
+  }
+
+  .no-access{
+    color: brown;
+    font-size: 26px;
+    text-align: center;
+    margin-top: 200px; 
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display:inline-block;
+    padding:100px;
+  }
+
+  .filter-container {
+    margin-bottom: 20px;
+    font-size:22px;
+    color:#666;
+    text-align:left;
+    border-top:1px solid #666;
+    padding:10px 0px 0px 50px;
+  }
+  .filter-container select{
+    font-size: 20px;
+    color:#666;
+    margin:10px 0px 0px 20px;
+  }

@@ -1,14 +1,14 @@
 <template>
     <div class="login">
-        <h1>КАБІНЕТ</h1>
+        <h1>АВТОРИЗАЦІЯ</h1>
         <p class="start">Введіть дані для авторизації</p>
         <form @submit.prevent="sendData">
             <input type="text" v-model="userName" name="userName" placeholder="Логін" required>
             <input type="password" v-model="userPass" name="userPass" placeholder="Пароль" required>
             <input type="email" v-model="userEmail" name="userEmail" placeholder="Email" required>
             <div class="new_acc">
-                <p class="quest">Ще не створили власну сторінку?</p>
-                <router-link to="/register"><button class="reg_but">Натисніть тут</button></router-link>
+                <p class="quest">Ще не створили власну стрінку?</p>
+                <router-link to="/reg-admin"><button class="reg_but">Натисніть тут</button></router-link>
             </div>
             <p class="error">{{ error }}</p>
             <button type="submit" class="log_but">Увійти</button>
@@ -18,7 +18,7 @@
 
 <script>
 import axios from 'axios';
-import { setUserToken, setUser } from '@/auth';
+import { setAdminToken, setAdmin } from '@/auth';
 
 export default {
     data() {
@@ -35,7 +35,7 @@ export default {
                 name: this.userName,
                 password: this.userPass,
                 email: this.userEmail,
-                role: 'user'
+                role: 'admin'
             };
 
             const url = 'http://localhost/Book-Store/database/checkUser.php';
@@ -47,9 +47,9 @@ export default {
             })
                 .then(response => {
                     if (response.data.message === "Користувач знайдений") {
-                        setUserToken(response.data.token);
-                        setUser(response.data.user); 
-                        this.$router.push('/myprofile');
+                        setAdminToken(response.data.token);
+                        setAdmin(response.data.user); 
+                        this.$router.push('/admin');
                     } else {
                         this.error = response.data.message;
                     }
@@ -77,12 +77,20 @@ input[type="email"] {
   font-size:22px;
 }
 .login{
-    width:800px;
-    margin:0 auto;
+  width:800px;
+  text-align: center;
+  margin:0 auto; 
+  margin-top:50px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding:50px;
+
 }
 .start{
-    color: #666;
-    font-size: 22px;
+  color: #666;
+  font-size: 22px;
 }
 .error {
   color: red;

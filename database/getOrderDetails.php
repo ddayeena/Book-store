@@ -8,11 +8,6 @@ $username = "root";
 $password = "";
 $dbname = "bookstore";
 
-if (!isset($_GET['user_id']) || !isset($_GET['order_id'])) {
-    echo json_encode(['error' => 'user_id and order_id must be provided']);
-    exit;
-}
-
 $user_id = $_GET['user_id'];
 $order_id = $_GET['order_id'];
 
@@ -59,10 +54,12 @@ $sql_details = "SELECT
                   delivery.town,
                   delivery.street,
                   delivery.street_number,
-                  delivery.type
+                  delivery.type,
+                  user.name AS user_name
                FROM orders
                JOIN order_details ON orders.id = order_details.order_id
                JOIN delivery ON orders.delivery_id = delivery.id
+               JOIN user ON orders.user_id = user.id
                WHERE orders.user_id = ? AND order_details.order_id = ?
                GROUP BY orders.id";
 

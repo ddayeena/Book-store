@@ -105,7 +105,7 @@ export default {
         return;
       }
 
-      axios.post('http://localhost/Book-Store/backend/makeOrder.php', {
+      axios.post('http://localhost/Book-Store/database/makeOrder.php', {
         user_id: this.user.id,
         cart_items: this.cart_items,
         total_price: this.totalPriceWithDelivery,

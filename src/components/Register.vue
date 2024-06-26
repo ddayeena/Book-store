@@ -18,7 +18,7 @@
 
 <script>
 import axios from 'axios';  
-import { setToken, setUser } from '@/auth';
+import { setUserToken, setUser } from '@/auth';
 
 export default {
     data() {
@@ -49,10 +49,11 @@ export default {
             const userData = {
                 name: this.userName,
                 password: this.userPass,
-                email: this.userEmail
+                email: this.userEmail,
+                role: 'user'
             };
 
-            const url = 'http://localhost/Book-Store/backend/regUser.php'; 
+            const url = 'http://localhost/Book-Store/database/regUser.php'; 
 
             axios.post(url, userData, {
                 headers: {
@@ -61,7 +62,7 @@ export default {
             })
                 .then(response => {
                     if (response.data.message === "Користувач зареєстрований успішно") {
-                        setToken(response.data.token); 
+                        setUserToken(response.data.token); 
                         setUser(response.data.user); 
                         this.$router.push('/myprofile');
                     } else {
