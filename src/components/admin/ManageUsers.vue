@@ -2,10 +2,10 @@
   <div class="users-container">
     <div v-if="isAdminAuthenticated">
       <div class="users" v-if="admin.role === 'admin'">
-        <h1>КОРИСТУВАЧІ</h1>
+        <h1>ПРАЦІВНИКИ</h1>
 
         <div class="filter-container">
-          <label for="role-filter">Обрати роль користувача:</label>
+          <label for="role-filter">Обрати роль працівника:</label>
           <select v-model="selectedRole" class="role-filter">
             <option value="">Всі ролі</option>
             <option value="admin">Admin</option>
@@ -15,11 +15,10 @@
         
         <div class="search-container">
           <i class="fa fa-search search-icon"></i>
-          <input type="text" v-model="searchQuery" placeholder="Пошук користувача за іменем" class="search-bar">
-
+          <input type="text" v-model="searchQuery" placeholder="Пошук працівника за іменем" class="search-bar">
         </div> 
 
-        <div v-if="filteredUsers.length === 0" class="search-text">Не знайдено користувачів за запитом «{{ searchQuery }}»</div>
+        <div v-if="filteredUsers.length === 0" class="search-text">Не знайдено працівників за запитом «{{ searchQuery }}»</div>
 
         <div v-else class="user-item-container">
           <div v-for="(user, index) in filteredUsers" :key="index">
@@ -65,7 +64,7 @@ export default {
     return {
       users: [],
       searchQuery: '',
-      selectedRole: '', // Додано об'єкт для зберігання обраної ролі
+      selectedRole: '',
     };
   },
   created() {

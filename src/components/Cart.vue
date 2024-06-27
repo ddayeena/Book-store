@@ -110,7 +110,7 @@ export default {
         });
     },
   removeAllFromCart(cartId) {
-      axios.post(`http://localhost/Book-Store/backend/removeAllFromCart.php?cart_details_id=${cartId}`)
+      axios.post(`http://localhost/Book-Store/database/removeAllFromCart.php?cart_details_id=${cartId}`)
         .then(response => {
         const indexToRemove = this.cart_items.findIndex(item => item.cart_details_id === cartId);
         if (indexToRemove !== -1) {

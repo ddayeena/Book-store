@@ -74,7 +74,6 @@ export default {
                     console.error('Помилка:', error);
                 });
         },
-
     }
 };
 
